@@ -1,0 +1,255 @@
+\documentclass{cubeamer}
+\usepackage{lmodern}
+\usepackage{graphicx}
+
+\title{Planck Thermal Control System.}
+%\subtitle{Conference Name}
+\author[Inés Arauzo Andres]{Inés Arauzo Andrés}
+\date{\today} % or whatever the date you are presenting in is
+\institute[UPM]{Heat transfer and thermal control \\
+
+\footnotesize{MUSE  IDR-UPM-ETSIAE}}
+
+
+% \copyrightnotice{Published by the American Institute of Aeronautics and Astronautics, Inc., with permission}
+
+\begin{document}
+
+\maketitle
+
+\cutoc
+
+\section{Introduction}
+
+\begin{frame}{What is Planck?}
+    \begin{minipage}{0.65\textwidth}
+    \begin{itemize}
+        \item Planck is the third generation space mission to measure the anisotropy of the cosmic microwave background (CMB). 
+        \item It orbits the second Lagrange point (L2)
+        \item It observes the sky in nine frequency bands covering from 27GHz to 1THz.
+        \item It has two main instruments:
+        \begin{enumerate}
+            \item The Low Frequency Instrument (LFI).
+            \item The High Frequency Instrument (HFI).
+        \end{enumerate}
+    \end{itemize}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/Planck1.jpg} \\
+    \includegraphics[width=0.9\linewidth]{Figures/Planck2.jpg}
+    \end{minipage}
+    
+\end{frame}
+
+\section{Mission requirements and constrains}
+
+\begin{frame}{Thermal requirements}
+\begin{table}[H]
+\begin{center}
+\caption{Operating temperatures of the main equipments.}
+\label{tab:ej2}
+\begin{tabular}{c c c c c}
+\toprule
+\textbf{Instrument} & \textbf{Solar Panel} &  \textbf{SVM} & \textbf{LFI} & \textbf{HFI} \\ \midrule
+\textbf{ $\boldsymbol{T}$ [K]} & 385 & 275 & 20 & 0.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+   \begin{itemize}
+   \item HFI environment temperature < 2K.
+   \item LFI environment temperature < 60K.
+   \item 0.5 W heatlift in the LFI.
+   \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Other requirements}
+
+   
+\begin{itemize}
+   \item No deployables.
+   \item No optical elements such as windows with warm edges between the feed horns and telescope 
+   \item 1.5 yr minimum total lifetime.
+   \item A spinning spacecraft.
+   \end{itemize}   
+\end{frame}
+
+\section{Precedents}
+\begin{frame}{Background}
+
+    \begin{minipage}{0.4\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/planck3.jpg} \\
+    \includegraphics[width=0.9\linewidth]{Figures/herschel.jpg}
+    \end{minipage}
+    \begin{minipage}{0.55\textwidth}
+
+   
+         \begin{itemize}
+         \item COBE ($T=2.725 \text{K}$): used a 650 l He cryostat to cool the IR spectro-photometer to 2 K .
+         \item WMAP ($T=90 \text{K}$): used passive cooling. A lot simpler, but unable to reach sub-Kelvin operating temperatures.
+         \item Herschel ($T=1.65 \text{K}$):  used 2 He cryostats of 2300 l each to cool the HIFI.
+
+         \end{itemize}
+    \end{minipage}
+\end{frame}
+
+
+
+
+\section{Thermal control instruments}
+\begin{frame}{Thermal control instruments}
+
+    
+    \begin{minipage}{0.5\textwidth}
+
+   \begin{enumerate}
+       \item Passive Elements
+         \begin{itemize}
+         \item Telescopic Baffle: provided radiative shield.
+         \item 3 V-groove radiators.
+         \end{itemize}
+         \item Active Elements
+         \begin{itemize}
+         \item Hydrogen sorption cooler.
+         \item Helium Joule Thompson expansion cooler.
+         \item He-He dilution cooler.
+
+         \end{itemize}
+    \end{enumerate}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/cut_T_view.png} 
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Passive elements}
+
+    \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/vgroves.jpg} \\
+    \includegraphics[width=0.9\linewidth]{Figures/V-groove_radiators.jpg}
+    \end{minipage}
+    \begin{minipage}{0.65\textwidth}
+
+   
+         \begin{itemize}
+         \item Telescopic Baffle: provided radiative shield.
+         \item 3 V-groove radiators: provided  thermal isolation and radiative cooling
+         \end{itemize}
+         Allows to reach the precooling temperature $\leq60$K.
+    \end{minipage}
+\end{frame}
+
+
+
+\begin{frame}{Active elements}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/H_sorption_cooler.png} 
+    \small \centering  H-Sorption cooler
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/He_JT_cooler.png} 
+    \small \centering  He-JT Expansion cooler
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/He_He_dilution.png} 
+    \small \centering  He-He dilution cooler
+\end{minipage}
+\end{frame}
+
+
+
+
+\begin{frame}{Active elements: H-Sorption Cooler}
+\centering
+
+    \includegraphics[width=0.7\linewidth]{Figures/Hsorption_cooler_diag.png} \\
+    Functioning of an sorption cooler
+\end{frame}
+
+
+
+
+\begin{frame}{Active elements: He-JT cooler}
+\begin{minipage}{0.4\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/JTHE.png} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{itemize}
+    \item JT He cooler works by expanding helium gas through a small orifice, resulting in a temperature drop. 
+    \item Cold He recirculates through a heat exchanger to cool down a target object.
+    \item He is compressed back to its original pressure to start the cooling cycle again.
+\end{itemize}
+\end{minipage}
+\end{frame}
+
+
+
+
+\begin{frame}{Active elements: He-He Dilution cooler}
+
+    \begin{minipage}{0.3\textwidth}
+            \includegraphics[width=0.8\linewidth]{Figures/He_He_dilution_diag.png} 
+
+    \end{minipage}
+    \begin{minipage}{0.65\textwidth}
+    \begin{itemize}
+        \item Cooling medium is a mixture of Helium-3 and Helium-4 gradually cooled down to temperatures approaching 0 K. 
+        \item Uses the superfluid helium-4 to carrying heat away from the target object, as it flows without any resistance.
+        \item Can achieve extremely low temperatures, down to a few millikelvin.
+    \end{itemize}
+    \end{minipage}
+
+\end{frame}
+\begin{frame}{Complete system}
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/complete.png} 
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/Diag_complete.png} 
+\end{minipage}
+\end{frame}
+\section{Future missions}
+\begin{frame}{Active Elements}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/Core.jpg} 
+    \small \centering  COrE+ \\ Cosmic Origins Explorer, ESA
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/litebird.png} 
+    \small \centering  LiteBird \\Primordial B modes mission, JAXA
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[width=0.9\linewidth]{Figures/ìxie.png} 
+    \small \centering  Pixie Absolute Spectrophotometer, NASA
+\end{minipage}
+\end{frame}
+
+\section{References}
+\begin{frame}{References}
+\begin{itemize}
+\small
+    \item López-Caraballo, C. H., Suárez, et al. (2011). On the stability and performance of the Planck satellite’s radiometers. Astronomy \& Astrophysics, 536, A12. doi: 10.1051/0004-6361/201116486.
+    \item Leroy, C., Arondel, A., Bernard, J., ..., \& Planck-HFI Instrument Team. (2011). Performances of the Planck-HFI cryogenic thermal control system. Astronomy \& Astrophysics, 536, A22. doi: 10.1051/0004-6361/201116486
+    \item Bhandari, P., Moore, B., Bolton, D., \& Aboobaker, A. (n.d.). Design and Analysis of V-Groove Passive Cryogenic Radiators for Space-borne Telescopes \& Instruments. Jet Propulsion Laboratory, California Institute of Technology, Pasadena, CA 91109.
+    \item Ranajoy Banerji. Optimisation of a 4th generation CMB space mission. Cosmology and Extra-Galactic Astrophysics. Université Paris Diderot .
+\end{itemize}
+\end{frame}
+
+ 
+
+\begin{frame}[standout]
+    \Huge\textsc{Thank you for attending}
+    
+    \vfill
+    
+    \LARGE\textsc{Questions?}
+\end{frame}
+
+
+
+
+
+
+\end{document}
