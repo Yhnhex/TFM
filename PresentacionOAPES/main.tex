@@ -2,11 +2,11 @@
 \usepackage{lmodern}
 \usepackage{graphicx}
 
-\title{Planck Thermal Control System.}
+\title{Thermal Mathematical Models Correlation.}
 %\subtitle{Conference Name}
 \author[Inés Arauzo Andres]{Inés Arauzo Andrés}
 \date{\today} % or whatever the date you are presenting in is
-\institute[UPM]{Heat transfer and thermal control \\
+\institute[UPM]{ \\
 
 \footnotesize{MUSE  IDR-UPM-ETSIAE}}
 
@@ -21,16 +21,15 @@
 
 \section{Introduction}
 
-\begin{frame}{What is Planck?}
+\begin{frame}{State of the art}
     \begin{minipage}{0.65\textwidth}
     \begin{itemize}
-        \item Planck is the third generation space mission to measure the anisotropy of the cosmic microwave background (CMB). 
-        \item It orbits the second Lagrange point (L2)
-        \item It observes the sky in nine frequency bands covering from 27GHz to 1THz.
-        \item It has two main instruments:
+        \item Thermal mathematical model of the UPMSat 3 in ESATAN. 
+        \item \approx 1150 nodes
+        \item Two steady cases defined by the mission requirements:
         \begin{enumerate}
-            \item The Low Frequency Instrument (LFI).
-            \item The High Frequency Instrument (HFI).
+            \item Steady hot with all the payloads active (PL1 Case).
+            \item Steady Cold, latency case, minimum power consumption.
         \end{enumerate}
     \end{itemize}
     \end{minipage}
@@ -41,21 +40,31 @@
     
 \end{frame}
 
-\section{Mission requirements and constrains}
+\begin{frame}{Objectives}
+    \begin{minipage}{0.3\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/Planck1.jpg} \\
+        \includegraphics[width=0.9\linewidth]{Figures/Planck2.jpg}
+    \end{minipage}
+    \begin{minipage}{0.65\textwidth}
+        \begin{itemize}
+            \item Develop thermal TVAC test cases in ESATAN.
+            \item Run the models on pycanha and compare the results with the ones from ESATAN.
+            \item Determine and compare the most influent parameters in the thermal model on flight and TVAC.
+            \item Optimize sensor placement for the TVAC test and the Flight cases. 
+            \item Correlate the model with the test cases.
+        \end{itemize}
+    \end{minipage}
+\end{frame}
 
-\begin{frame}{Thermal requirements}
-\begin{table}[H]
-\begin{center}
-\caption{Operating temperatures of the main equipments.}
-\label{tab:ej2}
-\begin{tabular}{c c c c c}
-\toprule
-\textbf{Instrument} & \textbf{Solar Panel} &  \textbf{SVM} & \textbf{LFI} & \textbf{HFI} \\ \midrule
-\textbf{ $\boldsymbol{T}$ [K]} & 385 & 275 & 20 & 0.1 \\
-\bottomrule
-\end{tabular}
-\end{center}
-\end{table}
+\section{Pycanha model validation}
+
+\begin{frame}{ESATAN vs Pycanha}
+    \begin{minipage}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/ESATAN.png} 
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/Pycanha.png} 
+    \end{minipage}
 
    \begin{itemize}
    \item HFI environment temperature < 2K.
@@ -246,7 +255,6 @@
     
     \LARGE\textsc{Questions?}
 \end{frame}
-
 
 
 
