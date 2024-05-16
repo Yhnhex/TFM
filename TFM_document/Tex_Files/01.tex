@@ -1,13 +1,18 @@
 \chapter{Introduction} \label{ch:chapter_01}
-In the context of space exploration, the thermal management of spacecraft is a critical aspect, particularly in ensuring their resilience to extreme temperature conditions. This study is dedicated to refining the methodologies employed in temperature sensor instrumentation for vacuum thermal testing and for on-board measurements, with a specific emphasis on the UPMSat-3 satellite.
 
-The primary objective is to establish a systematic approach that enhances our ability to extract comprehensive thermal behavior information from spacecraft components during testing. This involves the development of Python and C++ code for the processing and analysis of thermal models from ESATAN. These models encompass both the flight and test configurations of UPMSat-3, facilitating a detailed examination of its thermal characteristics.
+In the context of thermal testing, the effectiveness of sensor placement plays an important role in ensuring, not only the accuracy and reliability of test results but also the significance of them. That is why this project establishes a new methodology to optimize sensor placement for thermal testing and /or control. The motivation to improve thermal testing is highlighted by the substantial costs —both in terms of finances and time— associated with thermal testing procedures, which makes even more necessary to get useful results.
 
-Additionally, the study entails the computation of influence and sensitivity matrices, elucidating the relationships between temperature and various parameters. The identification of independent thermal parameters is integral to characterizing the spacecraft's thermal response accurately. Furthermore, a method for strategically positioning temperature sensors during tests will be devised to efficiently determine the values of these identified thermal parameters.
+Traditional approaches to sensor positioning often fall short in defining thermal experiments due to the complexity of representing the physical proccesses and properties in a thermal mathematical model. That is why an important part of the developed method revolves around parameter selection and model reduction. This might seem obvious at first sight, but  complex thermal mathematical models can have up to thousends of parameters and surpass the million of nodes, so the job of selecting adequatelly the parameters that represents the physics of the problem for every charge case must not be underestimated.
 
-The culmination of these efforts will be the application of the developed methodology to the thermal testing of UPMSat-3. This case study serves not only to validate the proposed strategies but also to contribute valuable insights to the broader field of space vehicle thermal design.
+In order to validate the method, it has been used in 3 thermal models:
 
-Through the interplay of theoretical model processing, parameter identification, and strategic sensor placement, this research aims to elevate the precision and efficiency of thermal testing. Subsequent sections will provide detailed insights into the specific methodologies employed to achieve the outlined objectives.
+\begin{itemize}
+	\item A 4 nodes model, which is a simple model where  that allows to test the method in a controlled environment.
+	\item 
+	\item The UPMSat-3, a real satellite that is currently being developed by the Universidad Politécnica de Madrid. This model is used to test the method in a real scenario.
+
+
+
 
 \section{Spacecraft Thermal Control}
 
