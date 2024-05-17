@@ -1,0 +1,106 @@
+% Esta plantilla ha sido diseñada por Daniel del Río Velilla, profesor en la Escuela de Aeronáutica y del Espacio, UPM.
+
+\documentclass[12pt,a4paper,titlepage,twoside]{report}
+\usepackage[smallcaps]{glossaries}[=v4.46]
+\newcommand{\Project}{Study Case 3}
+\newcommand{\ProjectTitle}{Sensitivity Analysis of Parameter Influence on Thermal Design in UPMSat 3}
+\newcommand{\ProjectSubject}{MSc in Space Systems}
+\newcommand{\ProjectAutor}{ Inés Arauzo Andrés}
+\newcommand{\ProjectTutor}{ Ignacio Torralbo Gimeno \\
+                            & Javier Piqueras Carreño}
+\newcommand{\ProjectLocation}{Madrid}
+\newcommand{\ProjectDate}{9 de marzo de 2024}
+% Descomentar si se tiene un repositorio del trabajo
+% \newcommand{\ProjectGitHub}{url}
+
+
+
+%   ---   INCLUIR ARCHIVOS DE CONFIGURACION   ---   %
+
+\input{./Tex_Files/packages.tex}
+\input{./Tex_Files/acronyms.tex}
+\input{./Tex_Files/header_footer.tex}
+\input{./Tex_Files/functions.tex}
+
+
+
+%   ---   COMIENZO DEL DOCUMENTO   ---   %
+
+\begin{document}
+
+
+%   ---   INCLUIR PORTADA   ---   %
+
+\input{./Tex_Files/portada.tex}
+
+
+
+%   ---   INDICE Y LISTAS   ---   %
+
+% Indice
+\pagenumbering{gobble}
+\tableofcontents
+\newpage
+
+% Numeracion en romano
+\pagenumbering{roman}
+\raggedbottom
+
+% Figuras    
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+\cleardoublepage
+
+% Tablas
+\addcontentsline{toc}{section}{\listtablename}
+\listoftables
+\cleardoublepage
+
+% Acronyms  
+\addcontentsline{toc}{section}{\acronymname}
+\printglossary[type=\acronymtype]   % \printglossary[type=\acronymtype,style=long]
+\cleardoublepage
+
+% Numeracion en arabico
+\setcounter{page}{0}
+\pagenumbering{arabic}
+
+
+
+%   ---   ARCHIVOS DEL DOCUMENTO   ---   %
+% Es recomendable escribir el trabajo en documentos separados y luego importarlos al main.
+
+\input{./Tex_Files/01.tex}
+%\input{Tex_Files/UPMSat3}
+\cleardoublepage
+
+
+%   ---   BIBLIOGRAFÍA/REFERENCIAS   ---   %
+
+\phantomsection
+\addcontentsline{toc}{section}{Referencias}
+\bibliographystyle{elsarticle-num}
+\bibliography{references.bib}
+\cleardoublepage
+
+
+
+%   ---   ANEXOS   ---   %
+
+\appendix
+\renewcommand{\appendixname}{Anexos}
+\addcontentsline{toc}{section}{\appendixname}
+\clearpage % or \cleardoublepage
+\appendixpage
+\addappheadtotoc
+\renewcommand{\appendixname}{Anexo}
+
+
+\input{./Tex_Files/A_01.tex}
+\cleardoublepage
+
+
+
+
+
+\end{document}
