@@ -1,0 +1,217 @@
+\chapter{Introduction} \label{ch:chapter_01}
+In the context of thermal testing, the effectiveness of sensor placement plays an important role in ensuring, not only the accuracy and reliability of test results but also the significance of them. The motivation to improve thermal testing is highlighted by the substantial costs —both in terms of finances and time— associated with thermal testing procedures, which makes even more necessary to get useful results.
+
+Traditional approaches to sensor positioning often fall short in defining thermal experiments due to the complexity of representing the physical proccesses and properties in a thermal mathematical model. Thus, an adequate parameter selection is key when trying to reduce a thermal mathematical model. This might seem obvious at first sight, but  complex thermal mathematical models can have up to thousands of parameters and surpass the million of nodes, so the job of selecting the parameters that capture the physics of the problem for every charge case must not be underestimated.
+
+Throughout this study case we have developed an efficient tool to identify the input parameters that have a significant influence on any of the possible outcomes. This tool has been used on 3 different thermal models in order to get a proper validation:
+
+\begin{itemize}
+	\item A 4 nodes model, which is a simple model where  that allows to test the method in a controlled environment.
+	\item A real FPGA model with 8 nodes that is used to test the method in a real, yet simple scenario.
+	\item The UPMSat-3, a real satellite that is currently being developed by the Universidad Politécnica de Madrid. This model is used to test the method in a real scenario.
+
+\end{itemize}
+
+The results of this work can be applied, in general, to many fields, however the work has been focused on spacecraft and space instruments thermal modeling and testing, in the context of
+the Space sector. The examples used along the document are centered on space hardware and for that reason, in the next section, the spacecraft thermal control topic is introduced
+with a brief summary of the particularities of the space environment
+
+\section{Spacecraft Thermal Control}
+
+The thermal design of a spacecraft is primarily influenced by the conditions it encounters during its mission in space. From a thermal perspective, the space environment is characterized by a vacuum, Solar radiation (both direct and reflected by nearby planets, known as albedo), and the infrared emission of celestial bodies.
+
+The main driver of a spacecraft thermal design is the in-flight environment where it needs to operate. From a thermal point of view, the space environment is characterized by the vacuum, the incoming Solar radiation, both direct and reflected by a nearby planet (albedo), and the infrared
+emission of the planet.Because a spacecraft operates in a vacuum, the only possible thermal interaction between the spacecraft and its environment its through radiation. On an Earth orbit, solar irradiance is the main heat load, with a mean value of 1366 W/m2 and a seasonal variation of ±1.7\% due to the eccentricity of the orbit of the Earth around the Sun. The solar irradiance value scales with the square of the distance to the Sun, and its spectrum can be modeled, from a thermal point of view, as a black body at some 5762 K, where 99 \% of the spectral emissive power of the Sun lies in the range 0.15 to 10 µm wavelength.
+
+\subsection{Thermal mathematical modelling}
+When creating a thermal model for an analysis of something space-related, the most common method is the lumped parameters [INSERTAR REFERENCIA], which consist of discretizing the physical system to a finite set of nodes, each of those representing an isotherm tiny volume with some properties associated to itself (with the thermal capacity of the material being among them). 
+
+The nodes are interconnected between themselves by the lineal (conductive and convective -if possible-) $G_{L_{ij}}$ and radiative $G_{R_{ij}}$ thermal conductances. The thermal charges are summed up in $Q_i$ (with $i$ being the number of the node); within this term, the solar charge, the planetary albedo, the electrical dissipation of the payloads or the infrared earth emission are represented among others. Now, using the equation of energy balance,
+\begin{equation}C_i\frac{dT_i}{dt}=Q_i+\sum_{j=1}^nG_{Lij}\left(T_j-T_i\right)+\sum_{j=1}^nG_{Rij}\sigma\left(T_j^4-T_i^4\right)\end{equation}
+we get a system of ordinary differential equations that can be solved through numerical methods.
+
+The values of the thermal conductances and capacitances are not always known, as they are usually a function of physical parameters such as geometry, pressure, torque, or surface finishing. There are several ways of calculating the lineal conductances [REFERENCIA], but when using reduced thermal models (where the geometry has been really simplified) it is usually better to take these $G_L$ as parameters. As for the radiative conductances, $G_R$, they come from the Geometrical Mathematical Model, the GMM, that is, when defining the geometry of the thermal model, the geometry is also detailed in order to get the external thermal charges and the view factors, which, with the different surface coatings give the corresponding $G_R$. While the calculation -or at least the estimation- of the $G_L$ can be done analytically and/or experimentally, the $G_R$ are usually obtained numerically through a MonteCarlo analysis [REFERENCIA] 
+
+
+
+\subsection{Analaysis cases}
+\subsection{Reduced thermal mathematical models}
+
+\chapter{Mathematical formulation}
+\section{Problem definition}
+\section{Error definition}
+\section{Model requirements}
+\section{Data acquisition}
+\section{Observability}
+\section{Parameters and nodes reduction}
+In order to choose the most adequate parameters to determine the reduced model, the matrix of influence $\mathbf{I}_{\mathbf{X}}$ is defined below:
+\begin{equation}
+\mathbf{I}_{\mathbf{X}}=\left[\begin{array}{cccc}
+\frac{\partial T_1}{\partial X_1} \delta X_1 & \frac{\partial T_1}{\partial X_2} \delta X_2 & \ldots & \frac{\partial T_1}{\partial X_{N_P}} \delta X_{N_P} \\
+\ldots & \ldots & & \ldots \\
+\frac{\partial T_{N_N}}{\partial X_1} \delta X_1 & \frac{\partial T_{N_N}}{\partial X_2} \delta X_2 & \ldots & \frac{\partial T_{N_N}}{\partial X_{N_P}} \delta X_{N_P}
+\end{array}\right]=\mathbf{M} \delta \boldsymbol{X}
+\end{equation}
+where $\mathbf{M}$ is the jacobian or sensibility matrix and $ \delta \boldsymbol{X}$ is a vector containing the allowable variation of each parameter within the design. In the influence matrix $\mathbf{I}_{\mathbf{X}}$ each column represents the temperature variation of the nodes that would be generated by a deviation on the parameter $ \delta X_i$. Therefore, the elements of this matrix have dimensions of temperature, showing the effect of every parameter in the model, which would not be possible using the jacobian matrix directly
+\section{Sensor positioning} 
+
+
+\chapter{Application to a 4 nodes models}
+\chapter{Application to the UPMSat-3}
+\section{Context}
+\section{Thermal mathematical model}
+\section{Model reduction}
+\subsection{Parameter identification}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/figs_malas/infmatHot_redAverage.png}
+	\caption{NO SIRVE, ES V0.}
+	\label{fig:fm1}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/figs_malas/infmatCold_redAverage.png}
+	\caption{NO SIRVE, ES V0}
+	\label{fig:fm2}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/figs_malas/infGlobalHot.png}
+	\caption{NO SIRVE, ES V0}
+	\label{fig:fm2}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/figs_malas/infGlobalCold.png}
+	\caption{NO SIRVE, ES V0}
+	\label{fig:fm2}
+\end{figure}
+\subsection{Nodal reduction}
+\subsection{Results}
+
+
+
+% \section{Sección}
+
+% \subsection{Citar referencias y acrónimos}
+
+% \cite{im78552}, \acrshort{mc}, \acrfull{mc}.
+
+% \subsection{Enumeraciones}
+
+% Enumeración.
+
+% \begin{enumerate}
+% 	\item La impresora debe contar con un sistema de nivelación de la base de impresión.
+% 	\item El sistema de extrusión de filamento debe asegurar que no se producirán inconsistencias durante los periodos largos de trabajo.
+% \end{enumerate}
+
+% Enumeración cambiando los items.
+
+% \begin{enumerate}[label= \textbf{R-\arabic*}]
+% 	\item La impresora debe contar con un sistema de nivelación de la base de impresión.
+% 	\item El sistema de extrusión de filamento debe asegurar que no se producirán inconsistencias durante los periodos largos de trabajo. \label{req:extrusion}
+% \end{enumerate}
+
+% Referenciar un item: \ref{req:extrusion}, \autoref{req:extrusion}.
+
+
+% Ejemplo de bulletpoints.
+
+
+% \begin{itemize}[label={\scriptsize\raisebox{0.5ex}{\textbullet}}]
+
+% 	\item Perfilería de aluminio.
+
+% \end{itemize}
+
+
+
+% %   ---   ---   %
+
+% \subsection{Figuras}
+
+% Las figuras se pueden fijar en el texto con H, posicionarlas lo mejor posible con h!, arriba con t, etc.
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=100mm]{duet3}
+% 	\caption{Motherboard Duet 3 6HC.}
+% 	\label{fig:000_00}
+% \end{figure}
+
+% Subfiguras en paralelo.
+
+% \begin{figure}[H]
+% 	\centering
+% 	\subfloat[Vista frontal del montaje.\label{fig:mont1}]
+% 	{
+% 		\includegraphics[width=50mm,angle=0]{Mont_01}
+% 	}
+% 	\hspace*{10mm}
+% 	\subfloat[Vista trasera del montaje.\label{fig:mont2}]
+% 	{\includegraphics[width=50mm,angle=0]{Mont_02}
+% 	}
+% 	\caption{Montaje del sistema de transmisión del eje X}
+% 	\label{fig:mont_nema}
+% \end{figure}
+
+
+% Ejemplo dos figuras en paralelo centradas verticalemtne.
+
+% \begin{figure}[H]
+% 	\begin{minipage}{\textwidth}
+% 		\centering
+% 		\raisebox{-0.5\height}{\includegraphics[width=0.4\textwidth]{Perfil_Aluminio}}
+% 	\hspace*{.2in}
+% 		\raisebox{-0.5\height}{\includegraphics[width=0.25\textwidth]{Perfil_Aluminio_Union}
+% 		}
+% 	\end{minipage}
+% 	\caption{Ejemplos de perfilería de aluminio.}
+% 	\label{fig:perfileria_alumnio}
+% \end{figure}
+
+% Barrera que no pueden atravesar las figuras.
+% \FloatBarrier
+
+
+% %   ---   ---   %
+
+% \subsection{Ecuaciones}
+
+% Ejemplo de ecuación, \autoref{eq:velocidad}
+
+% \begin{equation}\label{eq:velocidad}
+% 	l = \frac{\pi\cdot1.8}{180\cdot P}\cdot r = \frac{\pi\cdot1.8}{180\cdot16}\cdot 6 = 0.0117 \qquad [\mathrm{mm}].
+% \end{equation}
+
+
+
+% % ---   ---   --- %
+
+% \subsection{Tablas}
+
+% Ejemplo de tabla de grandes dimensiones e introducir una página apaisada. También se muestra como poner en negrita letras griegas, que a veces dan problemas.
+
+% \begin{landscape}
+%     \vspace*{\fill}
+%     \input{Tables/table_example}
+%     \vspace*{\fill}
+%     \clearpage
+% \end{landscape}
+
+
+% % ---   ---   --- %
+
+% \subsection{Código}
+
+
+% \begin{lstlisting}
+% M303 H0 S60 ; auto tune heater 0, default PWM (100%), 60C target
+% M303        ; report the auto-tune status or last resulM303 ; report the auto-tune status or last result
+% M500        ; save parameters
+% \end{lstlisting}
+
+% \lstinputlisting{Code/function.m}
+
+
