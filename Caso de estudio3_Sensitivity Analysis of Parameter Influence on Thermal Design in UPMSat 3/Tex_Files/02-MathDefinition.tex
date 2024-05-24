@@ -1,0 +1,101 @@
+\chapter{Problem definition}\label{ch:chapter02}
+As presented on \autoref{ch:chapter01}, parameter selection is a key step when creating and/or using models in almost any field, more so, in the space sector where everything has an extra cost associated. However, when talking more specifically about the thermal control for space missions, there are not so many techniques to extract the parameters that define the physics of the problem with most accuracy and observability. This is due to the fact that it has usually been overlooked, never optimizing the amount of information extracted from testing and mission monitoring. Thus, among this chapter the developed method is presented, along with the requirements the system must fulfil in order to use it.
+
+\section{Algorithm definition}
+A scheme of the method is developed on \autoref{fig:diagram}. The method has been implemented on Python \cite{python} using the Pycanha package, a thermal analysis tool developed by Dr.Piqueras that joins a Python front-end with a C+ background in order to get a user-friendly, yet fast thermal solver. All the functions and features created along this project have been implemented as libraries of this package, and can now be obtained open source on GitHub. Apart from pycanha, other commercial libraries such as NumPy \cite{numpy} and SciPy \cite{scipy} -For mathematical purposes- and Matplotlib \cite{matplotlib} have been used. Throughout the following sections each step of the algorithm is briefly explained.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Figures/influence_diagram.png}
+    \caption{Flow diagram of the method algorithm}
+    \label{fig:diagram}
+\end{figure}
+
+\section{Data Read}
+The first step of the method consist of the acquisition of data, whether it comes from an external model or if it has been developed directly with Pycanha. This second option is way easier, as the data read would be as easy as reading the TMM object, and all the parameters, associated formulas, geometrical definition etc. would be known. However, as pycanha is still on development it is quite difficult to create any kind of complex system, due to the lack of a graphic interface to create the geometry. 
+
+In order to make the package more usable with regard to bigger projects, the compatibility with the most extended  spacecraft thermal analysis tool, ESATAN-TMS \cite{esatan-tms}, is provided within the package. The files that pycanha uses to replicate the model created in esatan are the .TMD and some of the .data files, which must be exported separately.
+
+The .TMD files are binary coded files that result from each charge case, and they contain all the necessary information to run a TMM. These files give directly the lineal and radiative coupling matrices $K$ and $R$, the thermal capacities $C$ and the boundary conditions $Q$, and with that the system of equations presented on \autoref{eq: balance}, can be solved.
+
+However, this just gives the numerical result, eliminating all the parameters and formulas that are associated to the calculations of these matrices, which would not be useful to make any kind of analysis, so they have to be overwritten. Thus, after reading the .TMD, the .CONSTANTS.data and .LOCALS.data are read first and then, once the TMM has the parameters, the formulas are read in .COUPLINGS.data.
+
+To summarize:
+\begin{itemize}
+\item Create an empty TMM object.
+\item Read the .TMD file with all the numerical data.
+\item Read the parameters files.
+\item Overwrite de conductances gotten from the .TMD with the formulas associated to the arameters.
+\end{itemize}
+
+\section{Manual filter}
+Once all the data has been read, the engineer has to choose an initial set of parameters to begin the analysis with. This task must be done manually as it is not a matter of influence or sensitivity but the kind of parameters one wants to study. It takes not only an important engineering knowledge but also a great understanding of the model itself to be able to select an optimum set of parameters. 
+
+It will be further explained on latter chapters, but these choices are way easier to make if the model is developed by the same person who makes the analysis, as the parametrization will be purposefully done in a way that simplifies this task; this is the case for the 2 first cases that are analyzed, where due to this (and to the simpliccity of the models), this step can be skipped. However, in the third case, the UPMSat3 model is way more complex than the other two example cases and furthermore,  it has been developed by a different person who had no idea of the purpose of this parametrization, which highlights the importance of this step.
+
+However, for the proposed analysis, the materials and coatings do not change, and thus, neither does the thermo-optical properties, the densities or the conductivities associated to them. The radiative conductances were not even parametrized in first place, but as the thermo-optical properties do not  change and neither does the geometry, they will not be part of this initial set. Other parameters such as TIME or PERIOD do not variate either so can also be excluded. Furthermore, as previously mentioned, the study does not take into account the time variation, it is stationary, and thus the thermal capacities, have been also excluded.
+
+Taking this filter into account, the finil list must mainly comprehend lineal conductances $G_L$, or alternatively the $h_c$.
+
+
+\section{Jacobian matrix calculation}
+The algorithm uses the influence matrix to find which parameters have most influence on which nodes. In order to do that, it is necessary to calculate the Jacobian or Sensitivity matrix $\boldsymbol{M_t}$, defined by the derivatives of the temperature $T_i$ at each node with respect to each parameter $p_j$, 
+
+\begin{equation}
+    \boldsymbol{M_t} = \frac{\partial T_i}{\partial p_j} =\left[\begin{array}{cccc}
+\frac{\partial T_1}{\partial p_1}  & \frac{\partial T_1}{\partial p_2}  & \ldots & \frac{\partial T_1}{\partial p_{N_P}}  \\
+\ldots & \ldots & & \ldots \\
+\frac{\partial T_{N_N}}{\partial p_1}  & \frac{\partial T_{N_N}}{\partial p_2}  & \ldots & \frac{\partial T_{N_N}}{\partial p_{N_P}} 
+\end{array}\right].
+\end{equation}
+
+For simpler models, such as the 4 nodes one, the Jacobian can be obtained analytically, but in general there is no analytical solution, and it must be computed numerically. Thus, the approach has been to approximate these derivatives by central finite differences\footnote{The options of forward and backward differences have also been implemented}.The central difference approximation for the partial derivative $\frac{\partial T_i}{\partial p_j}$ is given by:
+
+\begin{equation}
+    \frac{\partial T_i}{\partial p_j} \approx \frac{T_i(p_j + \Delta p_j) - T_i(p_j - \Delta p_j)}{2 \Delta p_j}
+\end{equation}
+
+Here, $\Delta p_j$ is a small perturbation applied to the parameter $p_j$. The central difference method is chosen because it provides a more accurate approximation of the derivative compared to forward or backward differences, especially when dealing with numerical computations.
+
+To determine the appropriate perturbation $\Delta p_j$ for each parameter $p_j$,the following expression is used:
+\begin{equation}
+    \Delta p_j = p_j \cdot \sqrt{\varepsilon}
+\end{equation}
+
+where $\varepsilon$ is the machine epsilon for floating-point arithmetic, meaning the upper bound on the relative error due to rounding in floating-point calculations. In Python, this can be obtained using \lstinline{epsilon = np.finfo(float).eps}
+
+The perturbation $\Delta p_j$ is chosen as a small fraction of the parameter $p_j$ itself, scaled by the square root of the machine epsilon. This  ensures that the perturbation is neither too large (which could lead to inaccurate approximations due to nonlinear effects) nor too small (which could result in numerical inaccuracies due to round-off errors).
+
+To summarize, the computation of the Jacobian matrix $\bm{M_t}$ using central differences can be written as:
+
+
+\begin{equation}
+    \left(\bm{M_t}\right)_{ij} = \frac{T_i(p_j + \Delta p_j) - T_i(p_j - \Delta p_j)}{2 \Delta p_j},
+\end{equation}
+
+with
+
+
+\begin{equation}
+    \Delta p_j = p_j \cdot \sqrt{\varepsilon},
+\end{equation}
+
+ ensuring a balanced trade-off between accuracy and numerical stability in the computation of the derivatives.
+
+ \section{Influence matrix and normalization}
+
+ In order to choose the most adequate parameters to determine the reduced model, the matrix of influence $\mathbf{I}_{\mathbf{X}}$ is defined below:
+\begin{equation}
+\mathbf{I}_{\mathbf{X}}=\left[\begin{array}{cccc}
+\frac{\partial T_1}{\partial p_1} \delta p_1 & \frac{\partial T_1}{\partial p_2} \delta p_2 & \ldots & \frac{\partial T_1}{\partial p_{N_P}} \delta p_{N_P} \\
+\ldots & \ldots & & \ldots \\
+\frac{\partial T_{N_N}}{\partial p_1} \delta p_1 & \frac{\partial T_{N_N}}{\partial p_2} \delta p_2 & \ldots & \frac{\partial T_{N_N}}{\partial p_{N_P}} \delta p_{N_P}
+\end{array}\right]=\mathbf{M} \delta \boldsymbol{P}
+\end{equation}
+where $\mathbf{M_t}$ is the jacobian or sensibility matrix defined in the previous section, and $ \delta \boldsymbol{P}$ is a vector containing the allowable variation of each parameter within the design. In the influence matrix $\mathbf{I}_{\mathbf{X}}$ each column represents the temperature variation of the nodes that would be generated by a deviation on the parameter $ \delta p_i$. Therefore, the elements of this matrix have dimensions of temperature, showing the effect of every parameter in the model, which would not be possible using the jacobian matrix directly.
+
+Preeliminarly,  the parameter deviation $ \delta \boldsymbol{P}$ was taken as a 10\% deviatiion of the parameters, as at first the real allowable deviation was not available. It is interesting to see the change in the results between both of these deviations (see \autoref{ch:05}) as it shows the importance of using the influence matrix instead of just the jacobian. 
+
+
+
+
