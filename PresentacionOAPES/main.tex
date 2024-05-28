@@ -1,14 +1,14 @@
 \documentclass{cubeamer}
-\usepackage{lmodern}
 \usepackage{graphicx}
+\usepackage[inkscapeformat=png]{svg}
 
-\title{Thermal Mathematical Models Correlation.}
+\title{Optimization of thermal sensor placement.}
 %\subtitle{Conference Name}
 \author[Inés Arauzo Andres]{Inés Arauzo Andrés}
 \date{\today} % or whatever the date you are presenting in is
-\institute[UPM]{ \\
+\institute[UPM]{OAPES Project \\
 
-\footnotesize{MUSE  IDR-UPM-ETSIAE}}
+\footnotesize{ IDR-UPM-ETSIAE}}
 
 
 % \copyrightnotice{Published by the American Institute of Aeronautics and Astronautics, Inc., with permission}
@@ -21,228 +21,202 @@
 
 \section{Introduction}
 
-\begin{frame}{State of the art}
-    \begin{minipage}{0.65\textwidth}
-    \begin{itemize}
-        \item Thermal mathematical model of the UPMSat 3 in ESATAN. 
-        \item \approx 1150 nodes
-        \item Two steady cases defined by the mission requirements:
-        \begin{enumerate}
-            \item Steady hot with all the payloads active (PL1 Case).
-            \item Steady Cold, latency case, minimum power consumption.
-        \end{enumerate}
-    \end{itemize}
+\begin{frame}{UPMSat 3 Thermal Model}
+\begin{minipage}{0.4\textwidth}
+      Thermal mathematical model parametrized in ESATAN with 2 steady cases:
+    \begin{center}
+    \begin{tabular}{cc}
+    \toprule
+    \textbf{Cold Case }[$W$] & \textbf{Hot Case } [$W$]\\ \midrule
+    $\approx$ 1 & $\approx$ 7\\
+    \bottomrule
+    \end{tabular}
+    \end{center}  
+\end{minipage}
+        \begin{minipage}{0.5\textwidth}
+    \begin{flushright}
+        \includegraphics[width=0.9\linewidth]{Figures/UPMSAT3-esatan.png}
+    \end{flushright} 
     \end{minipage}
-    \begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/Planck1.jpg} \\
-    \includegraphics[width=0.9\linewidth]{Figures/Planck2.jpg}
-    \end{minipage}
-    
 \end{frame}
 
 \begin{frame}{Objectives}
-    \begin{minipage}{0.3\textwidth}
-        \includegraphics[width=0.9\linewidth]{Figures/Planck1.jpg} \\
-        \includegraphics[width=0.9\linewidth]{Figures/Planck2.jpg}
-    \end{minipage}
-    \begin{minipage}{0.65\textwidth}
-        \begin{itemize}
-            \item Develop thermal TVAC test cases in ESATAN.
-            \item Run the models on pycanha and compare the results with the ones from ESATAN.
-            \item Determine and compare the most influent parameters in the thermal model on flight and TVAC.
-            \item Optimize sensor placement for the TVAC test and the Flight cases. 
-            \item Correlate the model with the test cases.
-        \end{itemize}
-    \end{minipage}
+\textbf{Develop method to optimize thermocouple positioning in order to recover the maximum information possible}
+    \begin{itemize}
+        \item Validate ESATAN model with Pycanha.
+        \item Develop TVAC test cases in ESATAN.
+        \item Determine influential parameters in TVAC and flight cases.
+        \item Optimize sensor placement for maximum information.
+        \item Perturb and correlate the model.
+    \end{itemize}
 \end{frame}
 
-\section{Pycanha model validation}
 
-\begin{frame}{ESATAN vs Pycanha}
-    \begin{minipage}{0.5\textwidth}
-        \includegraphics[width=0.9\linewidth]{Figures/ESATAN.png} 
-    \end{minipage}
-    \begin{minipage}{0.5\textwidth}
-        \includegraphics[width=0.9\linewidth]{Figures/Pycanha.png} 
-    \end{minipage}
+\section{ESATAN Model Validation}
 
-   \begin{itemize}
-   \item HFI environment temperature < 2K.
-   \item LFI environment temperature < 60K.
-   \item 0.5 W heatlift in the LFI.
-   \end{itemize}
-
+\begin{frame}{TVAC Cases vs Pycanha}
+TVAC cases mirror  hot and cold flight scenarios in BC's. \\
+TVAC radiative case: enclosure 0 and 25 ºC for cold and hot scenarios respectively.
+    \begin{center}
+    \begin{tabular}{cccc}
+    \toprule
+    \textbf{Cold TVAC} & \textbf{Hot TVAC} & \textbf{Cold Flight} & \textbf{Hot Flight} \\
+    \midrule
+    $6\cdot 10^{-3}$ & $4\cdot 10^{-2}$ & $2\cdot 10^{-2}$ & $2\cdot 10^{-2}$ \\
+    \bottomrule
+    \end{tabular}
+    \end{center}
 \end{frame}
 
-\begin{frame}{Other requirements}
+\section{Parameter Influence}
 
-   
+\begin{frame}{Parameter Influence Diagram}
+    \begin{center}
+    \includesvg[width=0.7\linewidth]{Figures/diagrama.svg}
+    \end{center}
+\end{frame}
+\section{Influence Matrix}
+\begin{frame}{ Influence Matrix Definition}
 \begin{itemize}
-   \item No deployables.
-   \item No optical elements such as windows with warm edges between the feed horns and telescope 
-   \item 1.5 yr minimum total lifetime.
-   \item A spinning spacecraft.
-   \end{itemize}   
+    \item $M = $ Jacobian or sensitivity matrix (forward differences).
+    \item $\delta X = $ parameter allowed variation (preeliminary defined as $0.1X$).
+\end{itemize}
+\begin{center}
+\begin{equation}
+\mathbf{I}_{\mathbf{X}}=\left[\begin{array}{cccc}
+\frac{\partial T_1}{\partial X_1} \delta X_1 & \frac{\partial T_1}{\partial X_2} \delta X_2 & \ldots & \frac{\partial T_1}{\partial X_{N_P}} \delta X_{N_P} \\
+\ldots & \ldots & & \ldots \\
+\frac{\partial T_{N_N}}{\partial X_1} \delta X_1 & \frac{\partial T_{N_N}}{\partial X_2} \delta X_2 & \ldots & \frac{\partial T_{N_N}}{\partial X_{N_P}} \delta X_{N_P}
+\end{array}\right]=\mathbf{M} \delta \boldsymbol{X}
+\end{equation}
+
+\end{center}
+
 \end{frame}
 
-\section{Precedents}
-\begin{frame}{Background}
+\begin{frame}{Influence Matrix (TVAC)}
+\begin{center}
+    \begin{minipage}{0.475\textwidth}
+    \includegraphics[width=1\linewidth]{Figures/TVAC/infmatCC.png}
+\end{minipage}
+\begin{minipage}{0.475\textwidth}
+    \includegraphics[width=1\linewidth]{Figures/TVAC/infmatHC.png}
+\end{minipage}
+\end{center}
 
-    \begin{minipage}{0.4\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/planck3.jpg} \\
-    \includegraphics[width=0.9\linewidth]{Figures/herschel.jpg}
-    \end{minipage}
-    \begin{minipage}{0.55\textwidth}
-
-   
-         \begin{itemize}
-         \item COBE ($T=2.725 \text{K}$): used a 650 l He cryostat to cool the IR spectro-photometer to 2 K .
-         \item WMAP ($T=90 \text{K}$): used passive cooling. A lot simpler, but unable to reach sub-Kelvin operating temperatures.
-         \item Herschel ($T=1.65 \text{K}$):  used 2 He cryostats of 2300 l each to cool the HIFI.
-
-         \end{itemize}
-    \end{minipage}
 \end{frame}
 
+\begin{frame}{Influence Matrix (FLIGHT)}
+\begin{center}
+    \begin{minipage}{0.475\textwidth}
+    \includegraphics[width=1\linewidth]{Figures/Flight/infmatCC-F.png}
+\end{minipage}
+\begin{minipage}{0.475\textwidth}
+    \includegraphics[width=1\linewidth]{Figures/Flight/infmatHC-F.png}
+\end{minipage}
+\end{center}
 
+\end{frame}
 
+\begin{frame}{Combined Influence Matrix (TVAC)}
+\begin{center}
 
-\section{Thermal control instruments}
-\begin{frame}{Thermal control instruments}
+    \includegraphics[width=0.9\linewidth]{Figures/TVAC/infmatTC.png}
+\end{center}
 
-    
-    \begin{minipage}{0.5\textwidth}
+\end{frame}
 
-   \begin{enumerate}
-       \item Passive Elements
-         \begin{itemize}
-         \item Telescopic Baffle: provided radiative shield.
-         \item 3 V-groove radiators.
-         \end{itemize}
-         \item Active Elements
-         \begin{itemize}
-         \item Hydrogen sorption cooler.
-         \item Helium Joule Thompson expansion cooler.
-         \item He-He dilution cooler.
+\begin{frame}{Normalized Global Influence Matrix (TVAC)}
+\begin{center}
+ 
+    \includegraphics[width=0.9\linewidth]{Figures/TVAC/global-inf-TC.png}
 
-         \end{itemize}
-    \end{enumerate}
-    \end{minipage}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Reduced Global Influence Matrix (TVAC)}
+\begin{center}
+
+    \includegraphics[width=0.7\linewidth]{Figures/TVAC/parameters-imp-tvac2.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Reduced Global Influence Matrix (FLIGHT)}
+\begin{center}
+    \includegraphics[width=0.7\linewidth]{Figures/Flight/indep-iinfglobalboth.png}
+\end{center}
+\end{frame}
+
+\section{Possible scenarios}
+\begin{frame}{Depending on parameter importance}
+    \begin{itemize}
+        \item Flight case parameters $\subseteq$ Test Case parameters: Test case parameters will be able to model the flight scenario accurately.
+        \\
+        \item  Flight case parameters $\not \subseteq$ Test Case parameters: More and/or different test cases must be defined.
+    \end{itemize}
+\end{frame}
+\begin{frame}{Depending on number of sensors}
+    \begin{itemize}
+        \item Number of sensors $>$ Number of parameters $\longrightarrow$ solve with least squares to minimize the error (error $\neq$ 0)
+        \item Number of sensors $=$ Number of parameters $\longrightarrow$ place sensor in most relevant nodes and solve with least squares to minimize the error (error $\approx$ 0)
+        \item Number of sensors $=$ Number of parameters:
+        \begin{enumerate}
+            \item Use an SVD to determine which nodes give more information according to the eigenvalues.
+            \item Develop more test cases
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+\section{Node selection}
+\begin{frame}{Sensible nodes}
+\begin{center}
+
     \begin{minipage}{0.45\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/cut_T_view.png} 
-    \end{minipage}
-\end{frame}
-
-\begin{frame}{Passive elements}
-
-    \begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/vgroves.jpg} \\
-    \includegraphics[width=0.9\linewidth]{Figures/V-groove_radiators.jpg}
-    \end{minipage}
-    \begin{minipage}{0.65\textwidth}
-
-   
-         \begin{itemize}
-         \item Telescopic Baffle: provided radiative shield.
-         \item 3 V-groove radiators: provided  thermal isolation and radiative cooling
-         \end{itemize}
-         Allows to reach the precooling temperature $\leq60$K.
-    \end{minipage}
-\end{frame}
-
-
-
-\begin{frame}{Active elements}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/H_sorption_cooler.png} 
-    \small \centering  H-Sorption cooler
-\end{minipage}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/He_JT_cooler.png} 
-    \small \centering  He-JT Expansion cooler
-\end{minipage}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/He_He_dilution.png} 
-    \small \centering  He-He dilution cooler
-\end{minipage}
-\end{frame}
-
-
-
-
-\begin{frame}{Active elements: H-Sorption Cooler}
-\centering
-
-    \includegraphics[width=0.7\linewidth]{Figures/Hsorption_cooler_diag.png} \\
-    Functioning of an sorption cooler
-\end{frame}
-
-
-
-
-\begin{frame}{Active elements: He-JT cooler}
-\begin{minipage}{0.4\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/JTHE.png} 
+    \includegraphics[width=0.9\linewidth]{Figures/nodos1.png}
 \end{minipage}
 \begin{minipage}{0.5\textwidth}
-\begin{itemize}
-    \item JT He cooler works by expanding helium gas through a small orifice, resulting in a temperature drop. 
-    \item Cold He recirculates through a heat exchanger to cool down a target object.
-    \item He is compressed back to its original pressure to start the cooling cycle again.
-\end{itemize}
-\end{minipage}
-\end{frame}
-
-
-
-
-\begin{frame}{Active elements: He-He Dilution cooler}
-
-    \begin{minipage}{0.3\textwidth}
-            \includegraphics[width=0.8\linewidth]{Figures/He_He_dilution_diag.png} 
-
-    \end{minipage}
-    \begin{minipage}{0.65\textwidth}
+14 nodes:
     \begin{itemize}
-        \item Cooling medium is a mixture of Helium-3 and Helium-4 gradually cooled down to temperatures approaching 0 K. 
-        \item Uses the superfluid helium-4 to carrying heat away from the target object, as it flows without any resistance.
-        \item Can achieve extremely low temperatures, down to a few millikelvin.
+        \item 4 on the trays
+        \item 2 on the solar panels
+        \item 2 on the radiator frame
+        \item 2 on UC3M butterfly 
+        \item 1 on Shrinkwrap
+        \item 1 on OBC
+        \item 1 on Battery module
+        \item 1 on UC3M Ebox
     \end{itemize}
-    \end{minipage}
+\end{minipage}
+\end{center}
 
 \end{frame}
-\begin{frame}{Complete system}
-\begin{minipage}{0.45\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/complete.png} 
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/Diag_complete.png} 
-\end{minipage}
-\end{frame}
-\section{Future missions}
-\begin{frame}{Active Elements}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/Core.jpg} 
-    \small \centering  COrE+ \\ Cosmic Origins Explorer, ESA
-\end{minipage}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/litebird.png} 
-    \small \centering  LiteBird \\Primordial B modes mission, JAXA
-\end{minipage}
-\begin{minipage}{0.3\textwidth}
-    \includegraphics[width=0.9\linewidth]{Figures/ìxie.png} 
-    \small \centering  Pixie Absolute Spectrophotometer, NASA
-\end{minipage}
+
+\section{Future work}
+
+\begin{frame}{Next Steps}
+    \begin{itemize}
+        \item Refine influence matrices with realistic parameter variations ($\delta X$) and/or giving weights.
+        \item With new influence, refine the selected parameters to see if test cases still contain flight parameters.
+        \item Revisit over-determined and under-determined cases.
+        \item Begin test campaign.
+    \end{itemize}
 \end{frame}
 
 \section{References}
 \begin{frame}{References}
 \begin{itemize}
 \small
-    \item López-Caraballo, C. H., Suárez, et al. (2011). On the stability and performance of the Planck satellite’s radiometers. Astronomy \& Astrophysics, 536, A12. doi: 10.1051/0004-6361/201116486.
-    \item Leroy, C., Arondel, A., Bernard, J., ..., \& Planck-HFI Instrument Team. (2011). Performances of the Planck-HFI cryogenic thermal control system. Astronomy \& Astrophysics, 536, A22. doi: 10.1051/0004-6361/201116486
-    \item Bhandari, P., Moore, B., Bolton, D., \& Aboobaker, A. (n.d.). Design and Analysis of V-Groove Passive Cryogenic Radiators for Space-borne Telescopes \& Instruments. Jet Propulsion Laboratory, California Institute of Technology, Pasadena, CA 91109.
-    \item Ranajoy Banerji. Optimisation of a 4th generation CMB space mission. Cosmology and Extra-Galactic Astrophysics. Université Paris Diderot .
+    \item A. Avila, “JPL Thermal Design Modeling Philosophy and NASA-STD-7009
+Standard for Models and Simulations - A Case Study,” National Aeronautics
+and Space Administration, pp. 1–13, 2011.
+    \item M. Molina and C. Clemente, “Thermal Model Automatic Reduction: Algorithm
+and Validation Techniques,” in 19th European Workshop on Thermal and ECLS
+Software, no. 36, 2005
+    \item Mercer, J.F., Aglietti, G. and Remedia, M. (no date) Containment of the spacecraft finite element model correlation process. thesis. 
+    \item M. Bernard, T. Basset, F. Brunetti, and J. Etchells, “Thermal Model Reduc-
+tion Tool,” in 24th European Workshop on Thermal and ECLS Software, no.
+November, 2010, pp. 1–21..
 \end{itemize}
 \end{frame}
 
@@ -255,6 +229,7 @@
     
     \LARGE\textsc{Questions?}
 \end{frame}
+
 
 
 
