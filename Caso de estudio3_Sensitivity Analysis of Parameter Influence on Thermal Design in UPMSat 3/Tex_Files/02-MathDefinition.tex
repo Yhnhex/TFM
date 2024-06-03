@@ -153,12 +153,12 @@ An FPGA, or Field-Programmable Gate Array, is a type of electronic device that c
 
 In this case, the thermal model disposition is based on the one in REFERENCIA FPGA, and it has been represented on REFERENCIA IMAGEN FPGA. 
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[scale=0.5]{Figures/influence_diagram.png}
-%     \caption{}
-%     \label{fig:1}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Figures/influence_diagram.png}
+    \caption{}
+    \label{fig:1}
+\end{figure}
 
 Here, in the following table, the nodes are named in order to explain and clarify the model and the dissipation of each of them is also defined,
 
@@ -168,7 +168,7 @@ Here, in the following table, the nodes are named in order to explain and clarif
     \label{tab:nodesFPGA}
     \begin{tabular}{c c c}
     \toprule
-    \multicolumn{1}{c}{\textbf{Node Number}} & \multicolumn{1}{c}{\textbf{Structure Part}} & \multicolumn{1}{c}{$\boldsymbol{Q_I}$ [W]} \\ \midrule
+    \multicolumn{1}{c}{\textbf{Node Number}} & \multicolumn{1}{c}{\textbf{Structure Part}} & \multicolumn{1}{c}{$\boldsymbol{Q_I}$ [W]} \\\midrule
     1 & Board  & 3 \\
     2 & Junction  & 0 \\
     3 & Case  & 0 \\
@@ -176,7 +176,7 @@ Here, in the following table, the nodes are named in order to explain and clarif
     5 & Strap joint  & 0 \\
     6 & Structure A  & 0 \\
     7 & PCB frame  & 0 \\
-    9 & Environment  & 0 \\ \bottomrule
+    9 & Environment  & 0 \\\bottomrule
     \end{tabular}
     \end{table}
 
@@ -191,14 +191,14 @@ Having been above-mentioned, this model was directly developed with the pycanha 
 
 \begin{tabular}{c c c}
 \toprule
-\multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Description}} & \multicolumn{1}{c}{\textbf{Value}[]} \ \ \midrule
-GL_12  & Conductance between the board and the junction  & 0.5 \ \ 
-GL_23  & Conductance between the junction and the case  &  2\ \ 
-GL_34  & Conductance between the case and the Heat sink  & 0.2 \ \ 
-GL_45  & Conductance between the Heat sink and the thermal strap joint  & 0.15 \ \ 
-GL_56  & Conductance between the thermal strap joint and the structure  & 0.15 \ \ 
-GL_17  & Conductance between the Board and the Board frame  & 0.4 \ \ 
-GL_76  & Conductance between the Board frame and the Structure  & 0.4 \ \ \bottomrule
+\multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Description}} & \multicolumn{1}{c}{\textbf{Value}[W]} \\ \midrule
+$GL_12$  & Conductance between the board and the junction  & 0.5 \\ 
+$GL_23$  & Conductance between the junction and the case  &  2\\ 
+$GL_34$  & Conductance between the case and the Heat sink  & 0.2 \\ 
+$GL_45$  & Conductance between the Heat sink and the thermal strap joint  & 0.15 \\ 
+$GL_56$  & Conductance between the thermal strap joint and the structure  & 0.15 \\ 
+$GL_17$  & Conductance between the Board and the Board frame  & 0.4 \\ 
+$GL_76$  & Conductance between the Board frame and the Structure  & 0.4 \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -233,8 +233,8 @@ Following the algorithm, the reduced Jacobian matrix is used to obtain the influ
 
 \begin{tabular}{c c c}
 \toprule
-\multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{c}{\textbf{}} \ \ \midrule
-    &   &  \ \ \bottomrule
+\multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{c}{\textbf{}} \\ \midrule
+    &   &  \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -245,21 +245,21 @@ The resulting influence matrix is:
 \end{equation}
  which is graphically presented in \autoref{fig:infmatFPGA}
  
-%  \begin{figure}[H]
-%      \centering
-%      \includegraphics[scale=0.5]{Figures/influence_diagram.png}
-%      \caption{Influence matrix of the FPGA}
-%      \label{fig:infmatFPGA}
-%  \end{figure}
+ \begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.5]{Figures/influence_diagram.png}
+     \caption{Influence matrix of the FPGA}
+     \label{fig:infmatFPGA}
+ \end{figure}
 
  In \autoref{fig:infmatFPGA} it can be seen that the most important parameters are GL\_ and GL\_, and the points where they reach its maximum are nodes PATATIN and PATATON. However, in order to consider the influence of the parameters among all the nodes of the model, they are normalized. The result of this normalization can be seen in \autoref{fig:globalinfFPGA}
 
-%  \begin{figure}[H]
-%      \centering
-%      \includegraphics[scale=0.5]{Figures/influence_diagram.png}
-%      \caption{Normalized global influence of the parameters of the FPGA}
-%      \label{fig:globalinfFPGA}
-%  \end{figure}
+ \begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.5]{Figures/influence_diagram.png}
+     \caption{Normalized global influence of the parameters of the FPGA}
+     \label{fig:globalinfFPGA}
+ \end{figure}
 
  Setting the influence threshold on $\varepsilon_I = 0.1$, the parameters PATATIN y PATATON can be eliminated. 
 
