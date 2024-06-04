@@ -10,7 +10,9 @@ This satellite is a predecessor of another two missions, the UPMSat-2 and the UP
 
 
 \section{Thermal Design of the UPMSat3}
-The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a thermal model has been created to simulate the thermal behavior of the satellite. The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-P}.
+The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a thermal model has been created to simulate the thermal behavior of the satellite. 
+\subsection{Geometrical and thermal mathematical model}
+The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-P}.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Figures/UPMSat3/3DandESATAN-TNSmodel.png}
@@ -24,13 +26,37 @@ The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a t
     \label{fig:UPMSat3-Str-Inst-PL}
 \end{figure}
 
-The geometry of the model is defined by 1151 nodes (geometrical and non geometrical). The properties that define the model have been fully parametrized, defining each bulk material by its thermal conductivity, specific heat and density, and each surface material by its emissivity and absorptivity.
-
-
-
+The geometry of the model is defined by 1151 nodes (geometrical and non geometrical). The properties that define the model have been fully parametrized, defining each bulk material by its thermal conductivity, specific heat and density, and each surface material by its emissivity and absorptivity. These properties can be seen in \autoref{tab:initialparamsUPMSat3}, and they have been taken from REFERENCIA SERGIO, where the distribution of the materials and/or coatings can be found. For the current analysis this will not be necessary, as the parameters we are focusing in are the lineal conductances. 
+\subsection{Mission and charge cases}
+With respect to the mission and environment the satellite will suffer, the UPMSat 3 will describe a sun-synchronous orbit whose parameters are presented in \autoref{tab:UPMSat3-Orbit}. A representation of this orbit in ESATAN-TMS can be seen in  \autoref{fig:orbit}.
 \begin{table}[H]
     \centering
-    \caption{Dissipation of the instruments for earch charge case}
+    \caption{Orbital parameters UPMSat-3 mission}
+    \label{tab:UPMSat3-Orbit}
+    \begin{tabular}{c c}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Orbit parameters}} & \multicolumn{1}{c}{\textbf{Value}} \\ \midrule
+    Semimajor axis [km] & 6928 \\
+    Eccentricity & 0.001 \\
+    Inclination [deg] & 97.405 \\
+    RAAN [deg] & 79.812 \\
+    Argument of the Perigee [deg] & 0.0 \\
+    True anomaly [deg] & 0.0 \\
+    Primary pointing vector (Zenit) & {$[0.985,0.0,-0.174]$} \\
+    Secondary pointing vector (Normal to orbit) & {$[0.174,0.0,0.985]$} \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Figures/UPMSat3/orbit.jpg}
+    \caption{Orbit representation of the UPMSat-3}
+    \label{fig:orbit}
+\end{figure}
+Besides, the charge cases defined for the model are exposed in \autoref{tab:dissipationUPMSat3}, where the dissipation of the payloads are established. 
+\begin{table}[H]
+    \centering
+    \caption{Dissipation of the instruments for each charge case}
     \label{tab:dissipationUPMSat3}
     
 \begin{tabular}{cccccc}
@@ -63,99 +89,136 @@ The geometry of the model is defined by 1151 nodes (geometrical and non geometri
     \end{tabular}
     \end{table}
 
+    However, one must realize that this orbit represents a dynamic state, not a steady one, and the current method only works for steady states (at least for now). To solve this issue, 4 steady state cases were launched:
+    \begin{itemize}
+    \item Two flight steady cases, in which the temperatures are taken at one point of the orbit as if it was steady:
+    \begin{enumerate}
+        \item STEADY FLIGHT HOT: The satellite is in a PAYLOAD 1 mode, with all the instruments on and dissipating the most power, 15.76 W, at the hottest point of the orbit (with the panels facing the Sun).
+        \item STEADY FLIGHT COLD: The satellite is in a LATENCY mode, with all the instruments off except for the battery module, that is consuming 1 W. This point is calculated at the coldest point of the orbit, the middle of the eclipse.
+    \end{enumerate}
+    \item Two TVAC steady cases, in which the temperatures are calculated as in an enclosed environment (simulating a thermal vacuum chamber):
+    \begin{enumerate}
+        \item STEADY TVAC HOT: The satellite is in a PAYLOAD 1 mode, with all the instruments on and dissipating the most power, 15.76 W, with the enclosure at 298 K.
+        \item STEADY TVAC COLD: The satellite is in a LATENCY mode, with all the instruments off except for the battery module, that is consuming 1 W, with the enclosure at 273 K. 
+    \end{enumerate}
+    \end{itemize}
 
+    Note that, as the model is the same for every charge case, the initial step of manually filtering the parameters can be done for all of them. However, the following steps must be done separately, because the derivatives have to be calculated with the different datasets of temperatures.
+
+    \section{Validation of pycanha solvers}
+    As aforementioned, pycanha is a software on development phase, so before implementing the method on each charge case, the solvers used to calculate the jacobian matrices and the temperatures have to be validated with the ones obtained with ESATAN-TMS. The results of the comparison can be seen in \autoref{tab:UPMSat3-Validation}. The results are quite similar, with a maximum difference of $10^{-2}$, which is a good result for the first validation, as both the ESATAN and the pycanha solvers had a tolerance of this same order.
+    \begin{table}[H]
+    \centering
+    \caption{}
+    \begin{tabular}{c c c c}
+        \toprule
+        \textbf{Cold TVAC} & \textbf{Hot TVAC} & \textbf{Cold Flight} & \textbf{Hot Flight} \\
+        \midrule
+        $6\cdot 10^{-3}$ & $4\cdot 10^{-2}$ & $2\cdot 10^{-2}$ & $2\cdot 10^{-2}$ \\
+        \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \section{Application of the method to the UPMSat-3 model}
+    \subsection{Data read}
+    With the TMMs for every charge case generated, the parameters can be read. In this step the value of the parameter does not matter, so reading the parameters for one of the cases is enough to select which parameters to exclude, and then apply the same filter for every charge case. The initial parameter set read can be seen in \autoref{tab:initialparamsUPMSat3}, where all the parameters are defined
     \begin{table}[H]
         \centering
         \caption{Initial parameter set for the UPMSat3 model.}
         \label{tab:initialparamsUPMSat3}
+        \resizebox{\textwidth}{!}{%
     \begin{tabular}{cccc}
         \hline
         Number & Parameter & Value & Description \\
         \hline
-        1 & AB\_TA & 0.0882135 &  \\
-        2 & AB\_TB & 0.0528 &  \\
-        3 & AB\_TC & 0.0528 &  \\
-        4 & AB\_TD & 0.07062 &  \\
-        5 & Cp\_Al\_6061 & 896.0 &  \\
-        6 & Cp\_Al\_6082 & 935.0 &  \\
-        7 & Cp\_Al\_7075\_T651 & 960.0 &  \\
-        8 & Cp\_DELRIM\_300 & 2880.0 &  \\
-        9 & Cp\_PCB\_mat & 500.0 &  \\
-        10 & Cp\_SolCell\_Ga001 & 350.0 &  \\
-        11 & Cp\_Solar\_pane001 & 711.0 &  \\
-        12 & Dens\_Al\_6061 & 2700.0 &  \\
-        13 & Dens\_Al\_6082 & 2700.0 &  \\
-        14 & Dens\_Al\_7075\_T651 & 2810.0 &  \\
-        15 & Dens\_DELRIM\_300 & 1380.0 &  \\
-        16 & Dens\_PCB\_mat & 1700.0 &  \\
-        17 & Dens\_SolCell\_Ga001 & 5320.0 &  \\
-        18 & Dens\_Solar\_pane001 & 1550.0 &  \\
-        19 & Frame\_corner & 0.18234 &  \\
-        20 & Frame\_mid & 0.08995 &  \\
-        21 & GL\_BF & 0.16 &  \\
-        22 & GL\_THB & 0.27445565624 &  \\
-        23 & HY\_CPY\_RX & 0.124346 &  \\
-        24 & HY\_PCB12\_STR\_BOT & 0.028 &  \\
-        25 & HY\_PCB1\_STR\_TOP & 0.06 &  \\
-        26 & HY\_PCB2\_STR\_TOP & 0.104 &  \\
-        27 & HY\_STR\_TX & 0.371014 &  \\
-        28 & HY\_TX\_CPU & 0.79768 &  \\
-        29 & Hc\_bat\_eq & 32.4 &  \\
-        30 & Hc\_general & 300.0 &  \\
-        31 & Hc\_solar\_cells & 1000.0 &  \\
-        32 & Node\_to\_instrument & 2.0 &  \\
+        1 & AB\_TA & $8.82135 \cdot 10^{-2}$ & $GL$ between angle beams and Tray A \\
+        2 & AB\_TB & $5.28 \cdot 10^{-2}$ & $GL$ between angle beams and Tray A \\
+        3 & AB\_TC & $5.28 \cdot 10^{-2}$ & $GL$ between angle beams and Tray A \\
+        4 & AB\_TD & $7.062 \cdot 10^{-2}$ & $GL$ between angle beams and Tray A \\
+        5 & Cp\_Al\_6061 & $8.96 \cdot 10^{2}$ & Specific heat of Al6061 \\
+        6 & Cp\_Al\_6082 & $9.35 \cdot 10^{2}$ & Specific heat of Al 6082\\
+        7 & Cp\_Al\_7075\_T651 & $9.6 \cdot 10^{2}$ & Specific heat of Al7075\\
+        8 & Cp\_DELRIM\_300 & $2.88 \cdot 10^{3}$ & Specific heat of DELRIM \\
+        9 & Cp\_PCB\_mat & $5 \cdot 10^{2}$ & Specific heat of the PCB material \\
+        10 & Cp\_SolCell\_Ga001 & $3.5 \cdot 10^{2}$ & Specific heat of the solar cells \\
+        11 & Cp\_Solar\_pane001 & $7.11 \cdot 10^{2}$ & Specific heat of solar panel substrate \\
+        12 & Dens\_Al\_6061 & $2.7 \cdot 10^{3}$ & Specific heat of Al6061 \\
+        13 & Dens\_Al\_6082 & $2.7 \cdot 10^{3}$ & Specific heat of Al 6082\\
+        14 & Dens\_Al\_7075\_T651 & $2.81 \cdot 10^{3}$ & Specific heat of Al 7075\\
+        15 & Dens\_DELRIM\_300 & $1.38 \cdot 10^{3}$ & Specific heat of DELRIM \\
+        16 & Dens\_PCB\_mat & $1.7 \cdot 10^{3}$ & Specific heat of the PCB material \\
+        17 & Dens\_SolCell\_Ga001 & $5.32 \cdot 10^{3}$ & Specific heat of the solar cells \\
+        18 & Dens\_Solar\_pane001 & $1.55 \cdot 10^{3}$ & Specific heat of solar panel substrate \\
+        19 & Frame\_corner & $1.8234 \cdot 10^{-1}$ & $GL$ between the radiator frame and the panel\\
+        20 & Frame\_mid & $8.995 \cdot 10^{-2}$ & $GL$ between the radiator frame and the panel \\
+        21 & GL\_BF & $1.6 \cdot 10^{-1}$ & $GL$ between the butterfly and the frame \\
+        22 & GL\_THB & $2.74 \cdot 10^{-1}$ & $GL$ between the THB and the tray \\
+        23 & HY\_CPY\_RX & $1.24 \cdot 10^{-1}$ & $GL$ between the hydra instruments and their tray \\
+        24 & HY\_PCB12\_STR\_BOT & $2.8 \cdot 10^{-2}$ & $GL$ between the hydra instruments and their tray \\
+        25 & HY\_PCB1\_STR\_TOP & $6 \cdot 10^{-2}$ & $GL$ between the hydra instruments and their tray \\
+        26 & HY\_PCB2\_STR\_TOP & $1.04 \cdot 10^{-1}$ & $GL$ between the hydra instruments and their tray \\
+        27 & HY\_STR\_TX & $3.714 \cdot 10^{-1}$ & $GL$ between the hydra instruments and their tray \\
+        28 & HY\_TX\_CPU & $7.97 \cdot 10^{-1}$ & $GL$ between the hydra instruments and their tray \\
+        29 & Hc\_bat\_eq & $3.24 \cdot 10^{1}$ & $h_c$ between the battery module and the tray \\
+        30 & Hc\_general & $3 \cdot 10^{2}$ & $h_c$ assumed for every non defined conduction \\
+        31 & Hc\_solar\_cells & $1 \cdot 10^{3}$ & $h_c$ between solar cells and substrate \\
+        32 & Node\_to\_instrument & $2 \cdot 10^{0}$ & $h_c$ assumed between the non geometric nodes and its node \\
 
         \hline
-        \end{tabular}
+        \end{tabular}%
+        }
     \end{table}
 
 
 \begin{table}[H]
     \centering
     \caption{Initial parameter set for the UPMSat3 model.}
-    \label{tab:initialparamsUPMSat3}
+    \label{tab:initialparamsUPMSat3-2}
+    \resizebox{\textwidth}{!}{%
 \begin{tabular}{cccc}
     \hline
     Number & Parameter & Value & Description \\
     \hline   
-    33 & OBCTTC\_ADCS\_EXP & 0.114 &  \\
-    34 & PID\_heater & 0.9 &  \\
-    35 & Rad\_Frame\_Y & 0.00259 &  \\
-    36 & Rad\_Frame\_Z & 0.00336 &  \\
-    37 & SP\_HINGE & 0.3 &  \\
-    38 & Stracker\_spacer & 0.01 &  \\
-    39 & TAD\_CS & 0.032831 &  \\
-    40 & TA\_LPXY & 0.11564 &  \\
-    41 & TA\_UC3M2\_1 & 0.013025 &  \\
-    42 & TA\_UC3M2\_2 & 0.021 &  \\
-    43 & TB\_ADCS & 0.885 &  \\
-    44 & TB\_LPX & 0.0996 &  \\
-    45 & TB\_LPY & 0.108 &  \\
-    46 & TB\_RW12 & 0.0362655 &  \\
-    47 & TB\_RW3 & 0.0989393 &  \\
-    48 & TC\_LPX & 0.0996 &  \\
-    49 & TC\_LPY & 0.108 &  \\
-    50 & TC\_OBCTTC & 0.011 &  \\
-    51 & TC\_OBCTTC\_S & 0.111 &  \\
-    52 & TD\_LPX & 0.133215 &  \\
-    53 & TD\_LPY & 0.14445 &  \\
-    54 & TIMECT & 0.0 &  \\
-    55 & UC3M1\_LPXMIN & 0.052 &  \\
-    56 & WIRE\_24AWG & 0.0011 &  \\
-    57 & k1\_Solar\_pane001 & 5.0 &  \\
-    58 & k2\_Solar\_pane001 & 5.0 &  \\
-    59 & k3\_Solar\_pane001 & 5.0 &  \\
-    60 & k\_Al\_6061 & 167.0 &  \\
-    61 & k\_Al\_6082 & 170.0 &  \\
-    62 & k\_Al\_7075\_T651 & 130.0 &  \\
-    63 & k\_DELRIM\_300 & 0.21 &  \\
-    64 & k\_DELRIN & 0.25 &  \\
-    65 & k\_PCB\_mat & 0.45 &  \\
-    \hline
-    \end{tabular}
-\end{table}
+    33 & OBCTTC\_ADCS\_EXP & $1.14 \cdot 10^{-1}$ & $GL$ between the OBC module and the ADCS \\
+    34 & PID\_heater & $9 \cdot 10^{-1}$ & Dissipation of the PID heater \\
+    35 & Rad\_Frame\_Y & $2.59 \cdot 10^{-3}$ & $GL$ between the radiator and its frame \\
+    36 & Rad\_Frame\_Z & $3.36 \cdot 10^{-3}$ & $GL$ between the radiator and its frame \\
+    37 & SP\_HINGE & $3 \cdot 10^{-1}$ & $GL$ between the solar panel and its hinge \\
+    38 & Stracker\_spacer & $1 \cdot 10^{-2}$ & $GL$ between the startracker and its spacer \\
+    39 & TAD\_CS & $3.2831 \cdot 10^{-2}$ & $GL$ between the TAD and the CS \\
+    40 & TA\_LPXY & $1.1564 \cdot 10^{-1}$ & $GL$ between Tray A and the lateral panels \\
+    41 & TA\_UC3M2\_1 & $1.3025 \cdot 10^{-2}$ & $GL$ between Tray A and the UC3M instrument \\
+    42 & TA\_UC3M2\_2 & $2.1 \cdot 10^{-2}$ & $GL$ between Tray A and the UC3M instrument \\
+    43 & TB\_ADCS & $8.85 \cdot 10^{-1}$ & $GL$ between Tray B and the ADCS \\
+    44 & TB\_LPX & $9.96 \cdot 10^{-2}$ & $GL$ between Tray B and the lateral panels \\
+    45 & TB\_LPY & $1.08 \cdot 10^{-1}$ & $GL$ between Tray B and the lateral panels \\
+    46 & TB\_RW12 & $3.62655 \cdot 10^{-2}$ & $GL$ between Tray B and the RW12 instrument \\
+    47 & TB\_RW3 & $9.89393 \cdot 10^{-2}$ & $GL$ between Tray B and the RW3 instrument \\
+    48 & TC\_LPX & $9.96 \cdot 10^{-2}$ & $GL$ between Tray C and the lateral panels \\
+    49 & TC\_LPY & $1.08 \cdot 10^{-1}$ & $GL$ between Tray C and the lateral panels \\
+    50 & TC\_OBCTTC & $1.1 \cdot 10^{-2}$ & $GL$ between Tray C and the OBC \\
+    51 & TC\_OBCTTC\_S & $1.11 \cdot 10^{-1}$ & $GL$ between Tray C and the OBC \\
+    52 & TD\_LPX & $1.33215 \cdot 10^{-1}$ & $GL$ between Tray D and the lateral panels \\
+    53 & TD\_LPY & $1.4445 \cdot 10^{-1}$ & $GL$ between Tray D and the lateral panels \\
+    54 & TIMECT & $0.0$ & Duration of the simulation \\
+    55 & UC3M1\_LPXMIN & $5.2 \cdot 10^{-2}$ & $GL$ between the UC3M instrument and the lateral panels \\
+    56 & WIRE\_24AWG & $1.1 \cdot 10^{-3}$ & Dissipation of the wires \\
+    57 & k1\_Solar\_pane001 & $5.0 \cdot 10^{0}$ & Conductivity of the solar panels \\
+    58 & k2\_Solar\_pane001 & $5.0 \cdot 10^{0}$ & Conductivity of the solar panels \\
+    59 & k3\_Solar\_pane001 & $5.0 \cdot 10^{0}$ & Conductivity of the solar panels \\
+    60 & k\_Al\_6061 & $1.67 \cdot 10^{2}$ & Conductivity of Al 6061 \\
+    61 & k\_Al\_6082 & $1.70 \cdot 10^{2}$ & Conductivity of Al 6082 \\
+    62 & k\_Al\_7075\_T651 & $1.30 \cdot 10^{2}$ & Conductivity of Al 7075 \\
+    63 & k\_DELRIM\_300 & $2.1 \cdot 10^{-1}$ & Conductivity of DELRIM \\
+    64 & k\_DELRIN & $2.5 \cdot 10^{-1}$ & Conductivity of DELRIN \\
+    65 & k\_PCB\_mat & $4.5 \cdot 10^{-1}$ & Conductivity of PCB material \\
 
-    
+    \hline
+\end{tabular}%
+}
+\end{table}
+\subsection{Manual filter}
+Once the parameters have been read, the thermal conductivites, the densities and the specific heats are excluded from the list, as well as other parameters that resul unnecessary for the current analysis, such as the period of the orbit or the dissipation of the PID.
     \begin{table}[H]
         \centering
         \caption{Parameter set for the UPMSat3 after the manual filter.}
@@ -182,9 +245,7 @@ The geometry of the model is defined by 1151 nodes (geometrical and non geometri
         16 & Hc\_general & 300.0 \\
         17 & Hc\_solar\_cells & 1000.0 \\
         18 & Node\_to\_instrument & 2.0 \\
-        19 & OBCTTC\_ADCS\_EXP & 0.114 \\
-        20 & PID\_heater & 0.9 \\
-  
+        19 & OBCTTC\_ADCS\_EXP & 0.114 \\  
         \bottomrule
         \end{tabular}
     \end{table}
@@ -193,36 +254,64 @@ The geometry of the model is defined by 1151 nodes (geometrical and non geometri
     \begin{table}[H]
         \centering
         \caption{Parameter set for the UPMSat3 after the manual filter.}
-        \label{tab:manualfilterparamsUPMSat3}
+        \label{tab:manualfilterparamsUPMSat3-2}
     \begin{tabular}{ccc}
         \hline
         Number & Parameter & Value \\
         \hline
-    21 & Rad\_Frame\_Y & 0.00259 \\
-    22 & Rad\_Frame\_Z & 0.00336 \\
-    23 & SP\_HINGE & 0.3 \\
-    24 & Stracker\_spacer & 0.01 \\
-    25 & TAD\_CS & 0.032831 \\
-    26 & TA\_LPXY & 0.11564 \\
-    27 & TA\_UC3M2\_1 & 0.013025 \\
-    28 & TA\_UC3M2\_2 & 0.021 \\
-    29 & TB\_ADCS & 0.885 \\
-    30 & TB\_LPX & 0.0996 \\
-    31 & TB\_LPY & 0.108 \\
-    32 & TB\_RW12 & 0.0362655 \\
-    33 & TB\_RW3 & 0.0989393 \\
-    34 & TC\_LPX & 0.0996 \\
-    35 & TC\_LPY & 0.108 \\
-    36 & TC\_OBCTTC & 0.011 \\
-    37 & TC\_OBCTTC\_S & 0.111 \\
-    38 & TD\_LPX & 0.133215 \\
-    39 & TD\_LPY & 0.14445 \\
-    40 & UC3M1\_LPXMIN & 0.052   \\
-    41 & WIRE\_24AWG & 0.0011  \\
+    20 & Rad\_Frame\_Y & 0.00259 \\
+    21 & Rad\_Frame\_Z & 0.00336 \\
+    22 & SP\_HINGE & 0.3 \\
+    23 & Stracker\_spacer & 0.01 \\
+    24 & TAD\_CS & 0.032831 \\
+    25 & TA\_LPXY & 0.11564 \\
+    26 & TA\_UC3M2\_1 & 0.013025 \\
+    27 & TA\_UC3M2\_2 & 0.021 \\
+    28 & TB\_ADCS & 0.885 \\
+    39 & TB\_LPX & 0.0996 \\
+    30 & TB\_LPY & 0.108 \\
+    31 & TB\_RW12 & 0.0362655 \\
+    32 & TB\_RW3 & 0.0989393 \\
+    33 & TC\_LPX & 0.0996 \\
+    34 & TC\_LPY & 0.108 \\
+    35 & TC\_OBCTTC & 0.011 \\
+    36 & TC\_OBCTTC\_S & 0.111 \\
+    37 & TD\_LPX & 0.133215 \\
+    38 & TD\_LPY & 0.14445 \\
+    49 & UC3M1\_LPXMIN & 0.052   \\
+    40 & WIRE\_24AWG & 0.0011  \\
 
     \bottomrule
     \end{tabular}
 \end{table}
+Note that the list of parameters only retains the $GLs$ and $h_cs$, being set of linear conductances in different units.
 
-\section{TVAC}
+\subsection{Jacobian and influence matrix calculation}
+With a reduced set of parameters, the Jacobian is calculated for every charge case. These are not represented, neither shown mathematically because these matrices are size 1151x40, which is absurd as it would not fit. Then, using the parameters' deviation shown in \autoref{tab:manualfilterparamsUPMSat3}, the influence matrices for each charge case are calculated. However, the influence matrices show very interesting results, so they have been represented using a reduction matrix. This matrix is used to join the nodes that belong to a certain part of the structure and make its average, so instead of having 1151 columns, we have 31.
 
+The different influence matrices can be seen in Figures \ref{fig:FCC-infmat}, \ref{fig:FHC-infmat}, \ref{fig:TCC-infmat}  and \ref{fig:THC-infmat}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/infmatCC-F.png}
+    \caption{FLIGHT Cold case Influence matrix}
+    \label{fig:FCC-infmat}
+\end{figure}
+Here in \autoref{fig:FCC-infmat}, 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/infmatHC-F.png}
+    \caption{FLIGHT Hot case Influence matrix}
+    \label{fig:FHC-infmat}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatCC.png}
+    \caption{TVAC Cold case Influence matrix}
+    \label{fig:TCC-infmat}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatHC.png}
+    \caption{TVAC Hot case Influence matrix}
+    \label{fig:THC-infmat}
+\end{figure}
