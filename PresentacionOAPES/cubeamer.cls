@@ -182,7 +182,7 @@
 % Footer
 \setbeamertemplate{footline}{%
     \begin{beamercolorbox}[wd = \textwidth, ht = 1cm, sep = 0.2cm]{footer}
-        \includegraphics[height = 0.6cm]{Figures/ETSIAE.jpg}
+        \includegraphics[height = 0.6cm]{Figures/etsiae1.png}
         \hfill
         \raisebox{0.22cm}{
             \insertshortauthor
@@ -209,7 +209,7 @@
     \apptocmd{\appendix}{%
         \setbeamertemplate{footline}{%
         \begin{beamercolorbox}[wd = \textwidth, ht = 1cm, sep = 0.2cm]{footer}
-            \includegraphics[height = 0.6cm]{Figures/ETSIAE.jpg}
+            \includegraphics[height = 0.6cm]{Figures/etsiae1.png}
             \hfill
             \raisebox{0.22cm}{
                 \insertshortauthor
@@ -251,7 +251,7 @@
     {
         \setbeamertemplate{footline}{
            \begin{beamercolorbox}[wd = \textwidth, ht = 1cm, sep = 0.2cm]{footer}
-                \includegraphics[height = 0.6cm]{Figures/ETSIAE.jpg}
+                \includegraphics[height = 0.6cm]{Figures/etsiae1.png}
                 \hfill
                 \raisebox{0.22cm}{
                     \insertshortauthor
@@ -276,7 +276,7 @@
     {
         \setbeamertemplate{footline}{
            \begin{beamercolorbox}[wd = \textwidth, ht = 1cm, sep = 0.2cm]{footer}
-                \includegraphics[height = 0.6cm]{Figures/ETSIAE.jpg}
+                \includegraphics[height = 0.6cm]{Figures/etsiae1.png}
                 \hfill
                 \raisebox{0.22cm}{
                     \insertshortauthor
@@ -319,7 +319,7 @@
         \setbeamercolor{normal text}{fg = white, bg = black}
         \setbeamertemplate{footline}{
             \begin{beamercolorbox}[wd = \textwidth, ht = 1.2cm, sep = 0.4cm]{footer}
-                \includegraphics[height = 0.8cm]{Figures/ETSIAE.jpg}
+                \includegraphics[height = 0.8cm]{Figures/etsiae1.png}
                 \hfill
                 \ifdefined\@copyrightnotice
                     \raisebox{0.22cm}{
