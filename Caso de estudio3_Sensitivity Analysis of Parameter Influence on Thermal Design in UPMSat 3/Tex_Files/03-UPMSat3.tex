@@ -10,4 +10,219 @@ This satellite is a predecessor of another two missions, the UPMSat-2 and the UP
 
 
 \section{Thermal Design of the UPMSat3}
-The thermal design of the UPMSat3 has also been developed in the IDR/UPM and 
+The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a thermal model has been created to simulate the thermal behavior of the satellite. The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-P}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Figures/UPMSat3/3DandESATAN-TNSmodel.png}
+    \caption{3D and ESATAN-TMS models.}
+    \label{fig:UPMSat3-GMM}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{Figures/UPMSat3/str-inst-PL ESATANmodels.png}
+    \caption{Structure, instruments and payloads.}
+    \label{fig:UPMSat3-Str-Inst-PL}
+\end{figure}
+
+The geometry of the model is defined by 1151 nodes (geometrical and non geometrical). The properties that define the model have been fully parametrized, defining each bulk material by its thermal conductivity, specific heat and density, and each surface material by its emissivity and absorptivity.
+
+
+
+\begin{table}[H]
+    \centering
+    \caption{Dissipation of the instruments for earch charge case}
+    \label{tab:dissipationUPMSat3}
+    
+\begin{tabular}{cccccc}
+    \toprule \multirow{2}{*}{ \textbf{Element }} & \multicolumn{5}{c}{ \textbf{Dissipation} $[\mathbf{W}]$} \\
+    \cline{2-6} & \textbf{Safe} & \textbf{Nominal} & \textbf{Payload 1} & \textbf{Payload 2} &\textbf{ Latency} \\
+    \hline \multicolumn{6}{c}{ \textbf{Tray A }} \\
+    \hline \textbf{Cubeseuse-Sun} & 0.11 & 0.11 & 0.11 & 0.11 & 0.00 \\
+     \textbf{Module Bat-pw} & 0.50 & 0.50 & 0.50 & 0.50 & 1.00 \\
+     \textbf{Startrake}r & 0.15 & 0.15 & 0.15 & 0.15 & 0.00 \\
+     \textbf{UC3M 2} & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+     \textbf{Ebox\_UC3M} & 0.00 & 0.00 & 7.00 & 0.00 & 0.00 \\
+    \hline \multicolumn{6}{c}{ \textbf{Tray B }} \\
+    \hline \textbf{ADCS} & 2.28 & 2.28 & 2.28 & 2.28 & 0.00 \\
+     \textbf{Shriakutap 1} & 0.37 & 0.37 & 0.37 & 0.37 & 0.00 \\
+     \textbf{Shriakudian 2} & 0.37 & 0.37 & 0.37 & 0.37 & 0.00 \\
+     \textbf{Shrinkwian 3} & 0.37 & 0.37 & 0.37 & 0.37 & 0.00 \\
+     \textbf{6U deployable SA 1} & TBD & TBD & TBD & TBD & 0.00 \\
+     \textbf{6U deployable SA 2} & TBD & TBD & TBD & TBD & 0.00 \\
+     \textbf{Magnetometer 1} & 0.07 & 0.07 & 0.07 & 0.07 & 0.00 \\
+     \textbf{Magnetometer 2} & 0.07 & 0.07 & 0.07 & 0.07 & 0.00 \\
+    \hline \multicolumn{6}{c}{ \textbf{Tray C} } \\
+    \hline \textbf{UC3M 1} & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+     \textbf{BF\_UC3M} & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 \\
+    \textbf{ A3200 }& 3.25 & 3.25 & 3.25 & 3.25 & 0.00 \\
+      \textbf{IDR-COMS} & 0.00 & 0.00 & 0.00 & 2.50 & 0.00 \\
+    \textbf{ Cubesense-Nadir} & 0.11 & 0.11 & 0.11 & 0.11 & 0.00 \\
+     \hline \textbf{Total} & 7.65 & 7.65 & 15.65 & 10.15 & 1.00 \\
+     \bottomrule
+    
+    \end{tabular}
+    \end{table}
+
+
+    \begin{table}[H]
+        \centering
+        \caption{Initial parameter set for the UPMSat3 model.}
+        \label{tab:initialparamsUPMSat3}
+    \begin{tabular}{cccc}
+        \hline
+        Number & Parameter & Value & Description \\
+        \hline
+        1 & AB\_TA & 0.0882135 &  \\
+        2 & AB\_TB & 0.0528 &  \\
+        3 & AB\_TC & 0.0528 &  \\
+        4 & AB\_TD & 0.07062 &  \\
+        5 & Cp\_Al\_6061 & 896.0 &  \\
+        6 & Cp\_Al\_6082 & 935.0 &  \\
+        7 & Cp\_Al\_7075\_T651 & 960.0 &  \\
+        8 & Cp\_DELRIM\_300 & 2880.0 &  \\
+        9 & Cp\_PCB\_mat & 500.0 &  \\
+        10 & Cp\_SolCell\_Ga001 & 350.0 &  \\
+        11 & Cp\_Solar\_pane001 & 711.0 &  \\
+        12 & Dens\_Al\_6061 & 2700.0 &  \\
+        13 & Dens\_Al\_6082 & 2700.0 &  \\
+        14 & Dens\_Al\_7075\_T651 & 2810.0 &  \\
+        15 & Dens\_DELRIM\_300 & 1380.0 &  \\
+        16 & Dens\_PCB\_mat & 1700.0 &  \\
+        17 & Dens\_SolCell\_Ga001 & 5320.0 &  \\
+        18 & Dens\_Solar\_pane001 & 1550.0 &  \\
+        19 & Frame\_corner & 0.18234 &  \\
+        20 & Frame\_mid & 0.08995 &  \\
+        21 & GL\_BF & 0.16 &  \\
+        22 & GL\_THB & 0.27445565624 &  \\
+        23 & HY\_CPY\_RX & 0.124346 &  \\
+        24 & HY\_PCB12\_STR\_BOT & 0.028 &  \\
+        25 & HY\_PCB1\_STR\_TOP & 0.06 &  \\
+        26 & HY\_PCB2\_STR\_TOP & 0.104 &  \\
+        27 & HY\_STR\_TX & 0.371014 &  \\
+        28 & HY\_TX\_CPU & 0.79768 &  \\
+        29 & Hc\_bat\_eq & 32.4 &  \\
+        30 & Hc\_general & 300.0 &  \\
+        31 & Hc\_solar\_cells & 1000.0 &  \\
+        32 & Node\_to\_instrument & 2.0 &  \\
+
+        \hline
+        \end{tabular}
+    \end{table}
+
+
+\begin{table}[H]
+    \centering
+    \caption{Initial parameter set for the UPMSat3 model.}
+    \label{tab:initialparamsUPMSat3}
+\begin{tabular}{cccc}
+    \hline
+    Number & Parameter & Value & Description \\
+    \hline   
+    33 & OBCTTC\_ADCS\_EXP & 0.114 &  \\
+    34 & PID\_heater & 0.9 &  \\
+    35 & Rad\_Frame\_Y & 0.00259 &  \\
+    36 & Rad\_Frame\_Z & 0.00336 &  \\
+    37 & SP\_HINGE & 0.3 &  \\
+    38 & Stracker\_spacer & 0.01 &  \\
+    39 & TAD\_CS & 0.032831 &  \\
+    40 & TA\_LPXY & 0.11564 &  \\
+    41 & TA\_UC3M2\_1 & 0.013025 &  \\
+    42 & TA\_UC3M2\_2 & 0.021 &  \\
+    43 & TB\_ADCS & 0.885 &  \\
+    44 & TB\_LPX & 0.0996 &  \\
+    45 & TB\_LPY & 0.108 &  \\
+    46 & TB\_RW12 & 0.0362655 &  \\
+    47 & TB\_RW3 & 0.0989393 &  \\
+    48 & TC\_LPX & 0.0996 &  \\
+    49 & TC\_LPY & 0.108 &  \\
+    50 & TC\_OBCTTC & 0.011 &  \\
+    51 & TC\_OBCTTC\_S & 0.111 &  \\
+    52 & TD\_LPX & 0.133215 &  \\
+    53 & TD\_LPY & 0.14445 &  \\
+    54 & TIMECT & 0.0 &  \\
+    55 & UC3M1\_LPXMIN & 0.052 &  \\
+    56 & WIRE\_24AWG & 0.0011 &  \\
+    57 & k1\_Solar\_pane001 & 5.0 &  \\
+    58 & k2\_Solar\_pane001 & 5.0 &  \\
+    59 & k3\_Solar\_pane001 & 5.0 &  \\
+    60 & k\_Al\_6061 & 167.0 &  \\
+    61 & k\_Al\_6082 & 170.0 &  \\
+    62 & k\_Al\_7075\_T651 & 130.0 &  \\
+    63 & k\_DELRIM\_300 & 0.21 &  \\
+    64 & k\_DELRIN & 0.25 &  \\
+    65 & k\_PCB\_mat & 0.45 &  \\
+    \hline
+    \end{tabular}
+\end{table}
+
+    
+    \begin{table}[H]
+        \centering
+        \caption{Parameter set for the UPMSat3 after the manual filter.}
+        \label{tab:manualfilterparamsUPMSat3}
+    \begin{tabular}{ccc}
+        \hline
+        Number & Parameter & Value \\
+        \hline
+        1 & AB\_TA & 0.0882135 \\
+        2 & AB\_TB & 0.0528 \\
+        3 & AB\_TC & 0.0528 \\
+        4 & AB\_TD & 0.07062 \\
+        5 & Frame\_corner & 0.18234 \\
+        6 & Frame\_mid & 0.08995 \\
+        7 & GL\_BF & 0.16 \\
+        8 & GL\_THB & 0.27445565624 \\
+        9 & HY\_CPY\_RX & 0.124346 \\
+        10 & HY\_PCB12\_STR\_BOT & 0.028 \\
+        11 & HY\_PCB1\_STR\_TOP & 0.06 \\
+        12 & HY\_PCB2\_STR\_TOP & 0.104 \\
+        13 & HY\_STR\_TX & 0.371014 \\
+        14 & HY\_TX\_CPU & 0.79768 \\
+        15 & Hc\_bat\_eq & 32.4 \\
+        16 & Hc\_general & 300.0 \\
+        17 & Hc\_solar\_cells & 1000.0 \\
+        18 & Node\_to\_instrument & 2.0 \\
+        19 & OBCTTC\_ADCS\_EXP & 0.114 \\
+        20 & PID\_heater & 0.9 \\
+  
+        \bottomrule
+        \end{tabular}
+    \end{table}
+
+
+    \begin{table}[H]
+        \centering
+        \caption{Parameter set for the UPMSat3 after the manual filter.}
+        \label{tab:manualfilterparamsUPMSat3}
+    \begin{tabular}{ccc}
+        \hline
+        Number & Parameter & Value \\
+        \hline
+    21 & Rad\_Frame\_Y & 0.00259 \\
+    22 & Rad\_Frame\_Z & 0.00336 \\
+    23 & SP\_HINGE & 0.3 \\
+    24 & Stracker\_spacer & 0.01 \\
+    25 & TAD\_CS & 0.032831 \\
+    26 & TA\_LPXY & 0.11564 \\
+    27 & TA\_UC3M2\_1 & 0.013025 \\
+    28 & TA\_UC3M2\_2 & 0.021 \\
+    29 & TB\_ADCS & 0.885 \\
+    30 & TB\_LPX & 0.0996 \\
+    31 & TB\_LPY & 0.108 \\
+    32 & TB\_RW12 & 0.0362655 \\
+    33 & TB\_RW3 & 0.0989393 \\
+    34 & TC\_LPX & 0.0996 \\
+    35 & TC\_LPY & 0.108 \\
+    36 & TC\_OBCTTC & 0.011 \\
+    37 & TC\_OBCTTC\_S & 0.111 \\
+    38 & TD\_LPX & 0.133215 \\
+    39 & TD\_LPY & 0.14445 \\
+    40 & UC3M1\_LPXMIN & 0.052   \\
+    41 & WIRE\_24AWG & 0.0011  \\
+
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{TVAC}
+
