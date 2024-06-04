@@ -207,7 +207,7 @@ Again, as the initial list does not compel any extra parameter (optical properti
 The Jacobian matrix result is presented in 
 
 \begin{equation}
-\boldsymbol{J} =\left[\begin{pmatrix}
+\boldsymbol{J} =\left[\begin{bmatrix}
     7.63 \cdot 10^{-6} & -2.37 \cdot 10^{0} & -1.36 \cdot 10^{0} & -1.18 \cdot 10^{0} & -1.58 \cdot 10^{1} & -8.39 \cdot 10^{-4} & -3.24 \cdot 10^{-4} \\
     0.00 \cdot 10^{0} & 2.64 \cdot 10^{0} & -1.00 \cdot 10^{0} & -1.66 \cdot 10^{0} & -2.21 \cdot 10^{1} & -1.22 \cdot 10^{-3} & -4.67 \cdot 10^{-4} \\
     0.00 \cdot 10^{0} & 2.41 \cdot 10^{0} & -9.13 \cdot 10^{-1} & 1.20 \cdot 10^{0} & -2.37 \cdot 10^{1} & -1.30 \cdot 10^{-3} & -4.96 \cdot 10^{-4} \\
@@ -215,7 +215,7 @@ The Jacobian matrix result is presented in
     7.63 \cdot 10^{-6} & 2.05 \cdot 10^{-2} & -7.79 \cdot 10^{-3} & 1.03 \cdot 10^{-2} & 1.37 \cdot 10^{-1} & 1.71 \cdot 10^{-1} & -6.51 \cdot 10^{-2} \\
     7.63 \cdot 10^{-6} & 9.54 \cdot 10^{-6} & 3.81 \cdot 10^{-6} & 5.72 \cdot 10^{-5} & 5.09 \cdot 10^{-5} & 2.54 \cdot 10^{-5} & 0.00 \cdot 10^{0} \\
     7.63 \cdot 10^{-6} & -1.18 \cdot 10^{0} & 4.49 \cdot 10^{-1} & -5.92 \cdot 10^{-1} & -7.89 \cdot 10^{0} & -4.07 \cdot 10^{-4} & -1.62 \cdot 10^{-4}
-  \end{pmatrix}\right],
+  \end{bmatrix}\right],
 \label{eq:jacobianFPGA}
 \end{equation}
 
@@ -223,7 +223,7 @@ this matrix does not really throw us much information, but following the procedu
 
 \begin{equation}
 \resizebox{\textwidth}{!}{$\displaystyle
-\boldsymbol{R} =  \left[\begin{pmatrix}
+\boldsymbol{R} =  \left[\begin{bmatrix}
     1.0 & -6.9058 \cdot 10^{-1} & 2.1059 \cdot 10^{-1} & -2.0384 \cdot 10^{-1} & 2.8079 \cdot 10^{-1} & 3.8368 \cdot 10^{-1} & -3.7221 \cdot 10^{-1} \\
     -6.9058 \cdot 10^{-1} & 1.0 & -2.1383 \cdot 10^{-1} & 2.4005 \cdot 10^{-1} & -4.5252 \cdot 10^{-1} & -4.6117 \cdot 10^{-2} & 3.8611 \cdot 10^{-2} \\
     2.1059 \cdot 10^{-1} & -2.1383 \cdot 10^{-1} & 1.0 & 2.8671 \cdot 10^{-1} & 7.9104 \cdot 10^{-1} & 2.2341 \cdot 10^{-1} & -2.1606 \cdot 10^{-1} \\
@@ -231,21 +231,23 @@ this matrix does not really throw us much information, but following the procedu
     2.8079 \cdot 10^{-1} & -4.5252 \cdot 10^{-1} & 7.9104 \cdot 10^{-1} & 1.9556 \cdot 10^{-1} & 1.0 & 3.4234 \cdot 10^{-1} & -3.3551 \cdot 10^{-1} \\
     3.8368 \cdot 10^{-1} & -4.6117 \cdot 10^{-2} & 2.2341 \cdot 10^{-1} & 1.3120 \cdot 10^{-1} & 3.4234 \cdot 10^{-1} & 1.0 & -9.9971 \cdot 10^{-1} \\
     -3.7221 \cdot 10^{-1} & 3.8611 \cdot 10^{-2} & -2.1606 \cdot 10^{-1} & -1.3233 \cdot 10^{-1} & -3.3551 \cdot 10^{-1} & -9.9971 \cdot 10^{-1} & 1.0
-  \end{pmatrix}\right],
+  \end{bmatrix}\right],
   $}
 \end{equation}
 where the values of $r_{57}$, $r_{12}$ and $r_{75}$ are above the $\varepsilon_{LD}$, thus making these parameters linearly dependent. We have chosen to retain only $GL_{12}$, due to the importance of that parameter.
 
 With the lineally dependent parameters chosen, the new reduced Jacobian is expressed as,
 \begin{equation}
-    \boldsymbol{J_{LI}} = \left[\begin{pmatrix}
+    \resizebox{\textwidth}{!}{$\displaystyle
+    \boldsymbol{J_{LI}} = \left[\begin{bmatrix}
       7.63 \cdot 10^{-6} & -2.37 \cdot 10^{0} & -1.36 \cdot 10^{0} & -1.18 \cdot 10^{0} & -8.39 \cdot 10^{-4} & -3.24 \cdot 10^{-4} \\
       0.00 \cdot 10^{0} & 2.64 \cdot 10^{0} & -1.00 \cdot 10^{0} & -1.66 \cdot 10^{0} & -1.22 \cdot 10^{-3} & -4.67 \cdot 10^{-4} \\
       0.00 \cdot 10^{0} & 2.41 \cdot 10^{0} & -9.13 \cdot 10^{-1} & 1.20 \cdot 10^{0} & -1.30 \cdot 10^{-3} & -4.96 \cdot 10^{-4} \\
       0.00 \cdot 10^{0} & 4.11 \cdot 10^{-2} & -1.56 \cdot 10^{-2} & 2.06 \cdot 10^{-2} & -2.16 \cdot 10^{-3} & -8.30 \cdot 10^{-4} \\
       7.63 \cdot 10^{-6} & 2.05 \cdot 10^{-2} & -7.79 \cdot 10^{-3} & 1.03 \cdot 10^{-2} & 1.71 \cdot 10^{-1} & -6.51 \cdot 10^{-2} \\
       7.63 \cdot 10^{-6} & 9.54 \cdot 10^{-6} & 3.81 \cdot 10^{-6} & 5.72 \cdot 10^{-5} & 2.54 \cdot 10^{-5} & 0.00 \cdot 10^{0}
-    \end{pmatrix}\right],
+    \end{bmatrix}\right],
+    $}
     \label{eq:jacobianredFPGA}
     \end{equation}
     
@@ -272,7 +274,8 @@ Following the algorithm, the reduced Jacobian matrix is used to obtain the influ
 
 The resulting influence matrix is:
 \begin{equation}
-    \boldsymbol{I_{red}} = \begin{pmatrix}
+    \resizebox{\textwidth}{!}{$\displaystyle
+    \boldsymbol{I_{red}} = \begin{bmatrix}
         2.7249 \cdot 10^{-1} & 1.7781 \cdot 10^{-1} & 3.8147 \cdot 10^{-7} & 2.4882 \cdot 10^{-1} & 2.7247 \cdot 10^{-1} \\
         2.0065 \cdot 10^{-1} & 3.0645 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 1.6752 \cdot 10^{-1} & 2.0064 \cdot 10^{-1} \\
         1.8269 \cdot 10^{-1} & 2.7902 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 2.0678 \cdot 10^{-1} & 1.8268 \cdot 10^{-1} \\
@@ -280,7 +283,8 @@ The resulting influence matrix is:
         1.5579 \cdot 10^{-3} & 2.3796 \cdot 10^{-3} & 7.6294 \cdot 10^{-7} & 1.7647 \cdot 10^{-3} & 4.1271 \cdot 10^{-3} \\
         3.8147 \cdot 10^{-7} & 0.0000 \cdot 10^{0} & 3.8147 \cdot 10^{-7} & 3.8147 \cdot 10^{-7} & 0.0000 \cdot 10^{0} \\
         3.6228 \cdot 10^{-1} & 3.1494 \cdot 10^{-1} & 4.5207 \cdot 10^{-1} & 3.5044 \cdot 10^{-1} & 3.6227 \cdot 10^{-1} 
-      \end{pmatrix}.,
+      \end{bmatrix},
+        $}
     \label{eq:infmatFPGA}
 \end{equation}
  which is graphically presented in \autoref{fig:infmatFPGA}
