@@ -1,4 +1,4 @@
-\chapter{Application to the UPMSat3}\label{ch:04}
+\chapter{Application to the UPMSat3}\label{ch:03}
 \section{Introduction}
 
 The UPMSat-3 is a university satellite project led by the “Instituto Universitario de Microgravedad  Ignacio Da Riva” (IDR/UPM), a research institute from the Universidad Politécnica de Madrid (UPM). It is being developed in collaboration with the Real-Time Systems research group from UPM (STRAST, Sistemas de Tiempo Real y Arquitectura de Servicios Telemáticos). The UPMSat-3 is characterized as a 12U CubeSat with 0.2 × 0.2 × 0.34 cm dimensions. The satellite is scheduled for launch in mid-2024 aboard the Spectrum launcher from ISAR Aerospace. 
@@ -12,7 +12,7 @@ This satellite is a predecessor of another two missions, the UPMSat-2 and the UP
 \section{Thermal Design of the UPMSat3}
 The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a thermal model has been created to simulate the thermal behavior of the satellite. 
 \subsection{Geometrical and thermal mathematical model}
-The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-P}.
+The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-PL}.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{Figures/UPMSat3/3DandESATAN-TNSmodel.png}
@@ -26,7 +26,7 @@ The thermal model is composed of 3 trays, each one with different instruments an
     \label{fig:UPMSat3-Str-Inst-PL}
 \end{figure}
 
-The geometry of the model is defined by 1151 nodes (geometrical and non geometrical). The properties that define the model have been fully parametrized, defining each bulk material by its thermal conductivity, specific heat and density, and each surface material by its emissivity and absorptivity. These properties can be seen in \autoref{tab:initialparamsUPMSat3}, and they have been taken from REFERENCIA SERGIO, where the distribution of the materials and/or coatings can be found. For the current analysis this will not be necessary, as the parameters we are focusing in are the lineal conductances. 
+The geometry of the model is defined by 1151 nodes (geometrical and non geometrical). The properties that define the model have been fully parametrized, defining each bulk material by its thermal conductivity, specific heat and density, and each surface material by its emissivity and absorptivity. These properties can be seen in \autoref{tab:initialparamsUPMSat3}, and they have been taken from \cite{Sergio}, where the distribution of the materials and/or coatings can be found. For the current analysis this will not be necessary, as the parameters we are focusing in are the lineal conductances. 
 \subsection{Mission and charge cases}
 With respect to the mission and environment the satellite will suffer, the UPMSat 3 will describe a sun-synchronous orbit whose parameters are presented in \autoref{tab:UPMSat3-Orbit}. A representation of this orbit in ESATAN-TMS can be seen in  \autoref{fig:orbit}.
 \begin{table}[H]
@@ -65,7 +65,7 @@ Besides, the charge cases defined for the model are exposed in \autoref{tab:diss
     \hline \multicolumn{6}{c}{ \textbf{Tray A }} \\
     \hline \textbf{Cubeseuse-Sun} & 0.11 & 0.11 & 0.11 & 0.11 & 0.00 \\
      \textbf{Module Bat-pw} & 0.50 & 0.50 & 0.50 & 0.50 & 1.00 \\
-     \textbf{Startrake}r & 0.15 & 0.15 & 0.15 & 0.15 & 0.00 \\
+     \textbf{Startraker} & 0.15 & 0.15 & 0.15 & 0.15 & 0.00 \\
      \textbf{UC3M 2} & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
      \textbf{Ebox\_UC3M} & 0.00 & 0.00 & 7.00 & 0.00 & 0.00 \\
     \hline \multicolumn{6}{c}{ \textbf{Tray B }} \\
@@ -109,7 +109,8 @@ Besides, the charge cases defined for the model are exposed in \autoref{tab:diss
     As aforementioned, pycanha is a software on development phase, so before implementing the method on each charge case, the solvers used to calculate the jacobian matrices and the temperatures have to be validated with the ones obtained with ESATAN-TMS. The results of the comparison can be seen in \autoref{tab:UPMSat3-Validation}. The results are quite similar, with a maximum difference of $10^{-2}$, which is a good result for the first validation, as both the ESATAN and the pycanha solvers had a tolerance of this same order.
     \begin{table}[H]
     \centering
-    \caption{}
+    \caption{Validation of the pycanha steady solvers}
+    \label{tab:UPMSat3-Validation}
     \begin{tabular}{c c c c}
         \toprule
         \textbf{Cold TVAC} & \textbf{Hot TVAC} & \textbf{Cold Flight} & \textbf{Hot Flight} \\
@@ -292,36 +293,37 @@ With a reduced set of parameters, the Jacobian is calculated for every charge ca
 The different influence matrices can be seen in Figures \ref{fig:FCC-infmat}, \ref{fig:FHC-infmat}, \ref{fig:TCC-infmat}  and \ref{fig:THC-infmat}
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/infmatCC-F.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/Nuevas/infmatCC.png}
     \caption{FLIGHT Cold case Influence matrix}
     \label{fig:FCC-infmat}
 \end{figure}
 The distribution of temperature variation represented in \autoref{fig:FCC-infmat} makes perfect sense: the temperature change in most parts of the structure is close to 0, except for the area close to the battery module, where the a change in the parameter hc\_general would have a significant impact on the temperature. This is because the battery module is the only part of the structure that is dissipating power in this case. Other parts that are impacted by a change in the parameters are the radiator and its frame, which are impacted by the change in the conductance of the thermal strap, the radiator and the frame, which is normal due to the conection with the battery.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/infmatHC-F.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/Nuevas/infmatHC.png}
     \caption{FLIGHT Hot case Influence matrix}
     \label{fig:FHC-infmat}
 \end{figure}
 Now, in \autoref{fig:FHC-infmat}, the temperature change is more distributed, as the power is dissipated in more parts of the structure. The battery module is still a highly impacted part, although definitely not the most significant one. Here the nodes correponding to the Ebox of the UC3M, the OBC, the buterfly and the UC3M instruments would be the most impacted by a change in the parameters. Seeing it the other way round, in this case the hc\_general parameters looses part of the huge impact it had in the cold case, as the power is dissipated in more parts of the structure. Now, parameters like the conductance between different instruments  or between the tray and some of these instruments gain a lot of importanmce. This means it would be a lot easier to make measurements of these parameters in the hot case than in the cold one. However, see that the highest variation in this hot case is about 60\% the variation of the cold case, so even though in the hot case more parameters can be measured, parameters as the hc\_general will be better measured in the cold case.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatCC.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/Nuevas/infmatCC.png}
     \caption{TVAC Cold case Influence matrix}
     \label{fig:TCC-infmat}
 \end{figure}
-As opposed to the FLIGHT cold case, the TVAC cold case is absolutely distributed. However, taking a look at the units, its easy to see that the temperature deviation is so low that it is not worth it to measure any of these parameters, as the temperature change is really low. This charge case is not useful for the current analysis and will not be further considered.
+As opposed to the FLIGHT cold case, the TVAC cold case is very evenly distributed. However, taking a look at the units, its easy to see that the temperature deviation is so low that it is not worth it to measure any of these parameters, as the temperature change is really low. This charge case is not useful for the current analysis and will not be further considered, but a new valid cold TVAC charge case will be presented as future work.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatHC.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/Nuevas/infmatHC.png}
     \caption{TVAC Hot case Influence matrix}
     \label{fig:THC-infmat}
 \end{figure}
 
-The influence matrices for the TVAC cases are very similar to the flight cases, as the power dissipation is the same. The only difference is that the power is dissipated in a different environment, so the nodes that are impacted by a change in the parameters are different.
+As for the hot TVAC case, the similarities with the FLIGHT hot case are clear, which is to be expected. In this case, the maximums and minimums variate, but the distribution is quite similar, which is quite good as this means the test case is properly designed, and possibly the sensor optimal placement would be very similar in both cases. 
+
 
 \subsection{Normalization of the influence matrices and normalization filter}
-In order to compare the influence matrices, they have to be normalized, which is done exposed in \autoref{ch:chapter02}. The normalized matrices can be seen in Figures \ref{fig:FCC-norm-infmat}, \ref{fig:FHC-norm-infmat}, \ref{fig:TCC-norm-infmat} and \ref{fig:THC-norm-infmat}.
+In order to compare the influence matrices, they have to be normalized, which is done exposed in \autoref{ch:chapter02}.
 
 The result of this normalization does not really provide any new information from the one of the non-normalized matrices, as the values are the same, but this visualization helps discern which parameters have no importance, which ones are important because they have an impact on lots of parts of the structure even though they dont have a peak at one specifically (which is way more difficult to see in the non-normalized matrix) and if these last more distributed parameters are more or less important than the ones that do have a peak. By doing this, and seeing the initial resul the normalization threshold, $\varepsilon_{nf}$, has been set to 0.05.
 
@@ -330,28 +332,23 @@ Note that in order to place sensors it will be easier if they actually have a pe
 The normalized matrices can be seen in Figures \ref{fig:FCC-globalinf}, \ref{fig:FHC-globalinf}, \ref{fig:TCC-globalinf} and \ref{fig:THC-globalinf} below.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/globalinfmatCC.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/Nuevas/globalinfCC.png}
     \caption{FLIGHT Cold case Normalized Influence matrix}
     \label{fig:FCC-globalinf}
 \end{figure}
 As it was aforementioned, in the cold case the only parameters that have a significant impact are the ones that are connected to the battery module (hc\_general), the radiator and its frame, and the thermal strap. The rest of the matrix of influence is really close to 0. The parameters that are retained after the filter can be seen in table \autoref{tab:filteredparamsUPMSat3}. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/globalinfmatHC.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/Nuevas/globalinfHC.png}
     \caption{FLIGHT Hot case Normalized Influence matrix}
     \label{fig:FHC-globalinf}   
 \end{figure}
-With the same threshold, a lot more parameters are retained in the hot case, as the power is dissipated in more parts of the structure, as it was explained in the non-normalized matrix. However see, that all the parameters that were retained in the cold case are also retained in the hot case, so we would be able to use the same sensors in this case.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/globalinfmatCC.png}
-    \caption{TVAC Cold case Normalized Influence matrix}
-    \label{fig:TCC-globalinf}
-\end{figure}
+With the same threshold, a lot more parameters are retained in the hot case, as the power is dissipated in more parts of the structure, as it was explained in the non-normalized matrix. However, it is important to see that all the parameters that were retained in the cold case are also retained in the hot case, so we would be able to use the same sensors in this case.
 
+Finally, the TVAC hot case retains one more parameter than the FLIGHT hot case, being all the retained parameters of the flight cases subsets of this TVAC hot case, which will be really valuable for further analysis of the tests.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/globalinfmatHC.png}
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/Nuevas/globalinfHC.png}
     \caption{TVAC Hot case Normalized Influence matrix}
     \label{fig:THC-globalinf}
 \end{figure}
@@ -361,57 +358,65 @@ With the same threshold, a lot more parameters are retained in the hot case, as 
 \centering
 \caption{Retained parametersafter the normalization filter for each charge case.}
 \label{tab:filteredparamsUPMSat3}
-\begin{tabular}{c c c c}
+\begin{tabular}{c c c }
 \toprule
-\multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}} & \multicolumn{1}{c}{\textbf{TVAC-Cold}} & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \ \ \midrule
-Hc_solar_cells  & Hc_solar_cells  &  &TB_RW3  \\
-Hc_general  & Hc_general  &  AB_TD  \\
-TA_UC3M2_1  & TA_UC3M2_1  &  TA_UC3M2_1  \\
-Stracker_spacer  & Stracker_spacer  &  GL_THB  \\
-GL_THB  & GL_THB  &  TC_LPY  \\
-SP_HINGE  & TB_LPY  &  Hc_solar_cells  \\
-HY_CPY_RX  & HY_CPY_RX  &  TD_LPX  \\
-    & TB_RW12  &  TB_RW12  \\
-    & TB_RW3  &  TC_OBCTTC  \\
-    & TC_OBCTTC  &  TB_LPY  \\
-    & AB_TB  &  OBCTTC_ADCS_EXP  \\
-    & TD_LPX  &  Hc_general  \\
-    & Rad_Frame_Z  &  Rad_Frame_Z  \\
-    & AB_TD &  Stracker_spacer  \\
-    & OBCTTC_ADCS_EXP  &  SP_HINGE  \\
-    & & AB_TB  \\
+\multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}}  & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \\ \midrule
+Hc\_solar\_cells  & Hc\_solar\_cells  &  TB\_RW3  \\
+Hc\_general  & Hc\_general  &  AB\_TD  \\
+TA\_UC3M2\_1  & TA\_UC3M2\_1  &  TA\_UC3M2\_1  \\
+Stracker\_spacer  & Stracker\_spacer  &  GL\_THB  \\
+GL\_THB  & GL\_THB  &  TC\_LPY  \\
+SP\_HINGE  & TB\_LPY  &  Hc\_solar\_cells  \\
+HY\_CPY\_RX  & HY\_CPY\_RX  &  TD\_LPX  \\
+    & TB\_RW12  &  TB\_RW12  \\
+    & TB\_RW3  &  TC\_OBCTTC  \\
+    & TC\_OBCTTC  &  TB\_LPY  \\
+    & AB\_TB  &  OBCTTC\_ADCS\_EXP  \\
+    & TD\_LPX  &  Hc\_general  \\
+    & Rad\_Frame\_Z  &  Rad\_Frame\_Z  \\
+    & AB\_TD &  Stracker\_spacer  \\
+    & OBCTTC\_ADCS\_EXP  &  SP\_HINGE  \\
+    & & AB\_TB  \\
+    & & HY\_CPY\_RX \\
     \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Linear dependence filter}
-Finally, the linear dependence filter is applied to the retained parameters. the final set of parameters that are retained after this filter can be seen in \autoref{tab:finalparamsUPMSat3},
-
-
+Finally, the linear dependence filter is applied to the retained parameters. The final set of parameters that are retained after this filter can be seen in \autoref{tab:finalparamsUPMSat3}. See that in all the valid charge cases the only dependent parameter (among the ones that passed the previous threshold), was the HY\_CPY\_RX, which can be explained by the direct connection it had with the thermal strap, which, may have led to these two parameters to be dependent.
 \begin{table}[H]
     \centering
-    \caption{Final parameters for each charge case.}
+    \caption{Retained parameters after the normalization filter for each charge case.}
     \label{tab:finalparamsUPMSat3}
-    \begin{tabular}{c c c c}
+    \begin{tabular}{c c  c}
     \toprule
-    \multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}} & \multicolumn{1}{c}{\textbf{TVAC-Cold}} & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \ \ \midrule
-    Hc_solar_cells  & Hc_solar_cells  &  & \\ 
-    Hc_general  & Hc_general  &  & \\
-    TA_UC3M2_1  & TA_UC3M2_1  &  & \\
-    Stracker_spacer  & Stracker_spacer  &  & \\
-    GL_THB  & GL_THB  &  & \\
-    SP_HINGE  & TB_LPY  &  & \\
-    HY_CPY_RX  & HY_CPY_RX  &  & \\
-        & TB_RW12  &  & \\
-        & TB_RW3  &  & \\
-        & TC_OBCTTC  &  & \\
-        & AB_TB  &  & \\
-        & TD_LPX  &  & \\
-        & Rad_Frame_Z  &  & \\
-        & AB_TD &  & \\
-        & OBCTTC_ADCS_EXP  &  & \\
-    
+    \multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}}  & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \\ \midrule
+    Hc\_solar\_cells  & Hc\_solar\_cells  &  TB\_RW3  \\
+    Hc\_general  & Hc\_general  &  AB\_TD  \\
+    TA\_UC3M2\_1  & TA\_UC3M2\_1  &  TA\_UC3M2\_1  \\
+    Stracker\_spacer  & Stracker\_spacer  &  GL\_THB  \\
+    GL\_THB  & GL\_THB  &  TC\_LPY  \\
+    SP\_HINGE  & TB\_LPY  &  Hc\_solar\_cells  \\
+        & TB\_RW12  &  TB\_RW12  \\
+        & TB\_RW3  &  TC\_OBCTTC  \\
+        & TC\_OBCTTC  &  TB\_LPY  \\
+        & AB\_TB  &  OBCTTC\_ADCS\_EXP  \\
+        & TD\_LPX  &  Hc\_general  \\
+        & Rad\_Frame\_Z  &  Rad\_Frame\_Z  \\
+        & AB\_TD &  Stracker\_spacer  \\
+        & OBCTTC\_ADCS\_EXP  &  SP\_HINGE  \\
+        & & AB\_TB  \\
+        & & TD\_LPX \\
         \bottomrule
     \end{tabular}
-    \end{table}
-    
+\end{table}
+
+Finally, an SVD decomposition has been done over the initial set of parameters and over the last one for the TVAC case, the resulting eigenvalues are presented below in REFERENCIA SVD, showing that the nodes coincide with 5\% deviation. Thus, we can conclude that the physics of the problem can be represented with this reduced set of parameters.  
+
+\begin{center}
+    IMAGEN
+
+SVD
+
+AQUI
+\end{center}

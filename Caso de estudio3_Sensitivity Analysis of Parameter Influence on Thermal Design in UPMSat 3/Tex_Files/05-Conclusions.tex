@@ -1,1 +1,30 @@
-\chapter{Conclusions}\label{ch:05}
+\chapter{Conclusions and future work}\label{ch:05}
+
+\section{Conclusions}
+Among the present study case, a method to analyze the influence of each parameter and to select the most important ones has been presented. This method focuses on the computation of the Jacobian and the Influence matrices to later use them as tools to recognize the influence of the parameters on every part of the structure as well as to see how the parameters are related among themselves. 
+
+This method has been first applied to a simple model, looking for a better understanding of the process itself. After that it has been used in a real space demonstrator,  not only obtaining some fascinating results, but also developing some test and flight cases to a real space mission and improving some features to the software in use.
+
+With the implementation of the method to the UPMSat-3 the parameters that must be analyzed in order to be able to retain the physics of the problem are reduced a 56\%, which, as will be mentioned in the future work section, is key to reduce the number of sensors necessary to test the satellite. Furthermore, this analysis has shown what parameters can be measured with each charge case, giving an automatic mathematical reasoning to the charge cases proposed.
+
+In the same line, the method has been proven useful to see if the proposed  charge cases are not valid or convenient, as the cold TVAC case proposed was discarded in the implementation of the method, otherwise it would have been presented as valid. This is quite interesting due to the costs (in terms of money and time) of doing a TVAC test; doing a TVAC test to find out it was useless is not only really expensive but can also delay the whole project.
+
+
+It is also worth highlighting the improvements made to the pycanha package throughout the implementation of the current method, such as:
+\begin{itemize}
+    \item The implementation of Jacobian calculation for steady cases, in an analytical way as the one proposed in \cite{ignacio}, and also numerically, through centered forward and backward differences, as well as the computation of influence matrices.
+    \item Useful features like the read-label and the reduction matrix computation that will come in really handy for future projects.
+    \item The correction of some errors, in the data read functions that were not properly defined and led to a misinterpretation of correct data.
+\end{itemize}
+
+
+\section{Future work}
+
+The work presented in this study case, may be used as a starting point for future ones. In this context, some ideas have been proposed as points where this method could be improved, or a further research could be done:
+\begin{enumerate}
+    \item Development and analysis of more charge cases to ensure that this parameter reduction retains the physics of the problem not only in the  hot and cold extreme cases, but also at points in between those.
+    \item Definition of sensor positioning. Due to the scope of this project, the positioning of the sensors has only been mentioned, but an optimization of the thermocouples positioning would be a fascinating advance to this method.
+    \item Definition influence weights. The proposed method does not present the possibility of some parameters being more influential, maybe not in a physical way, but for engineering purposes. 
+    \item Correlation between the TVAC cases and the flight ones. This relation has been envisioned in several occasions among this project, but an actual mathematical correlation is yet to be done.
+    \item Correlation with real test cases. Although no correlation has been done yet (not with computer models, neither with physical ones), correlating a simple model -like the FPGA- with a real TVAC test, would be very useful to validate the method.
+\end{enumerate}
