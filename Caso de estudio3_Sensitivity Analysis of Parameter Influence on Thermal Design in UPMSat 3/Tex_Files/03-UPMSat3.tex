@@ -287,7 +287,7 @@ Once the parameters have been read, the thermal conductivites, the densities and
 Note that the list of parameters only retains the $GLs$ and $h_cs$, being set of linear conductances in different units.
 
 \subsection{Jacobian and influence matrix calculation}
-With a reduced set of parameters, the Jacobian is calculated for every charge case. These are not represented, neither shown mathematically because these matrices are size 1151x40, which is absurd as it would not fit. Then, using the parameters' deviation shown in \autoref{tab:manualfilterparamsUPMSat3}, the influence matrices for each charge case are calculated. However, the influence matrices show very interesting results, so they have been represented using a reduction matrix. This matrix is used to join the nodes that belong to a certain part of the structure and make its average, so instead of having 1151 columns, we have 31.
+With a reduced set of parameters, the Jacobian is calculated for every charge case. These are not represented, neither shown mathematically because these matrices are size 1151x40, which is absurd as it would not fit. Then, using the parameters' deviation shown in \autoref{tab:manualfilterparamsUPMSat3}, the influence matrices for each charge case are calculated. However, the influence matrices show very interesting results, so they have been represented using a reduction matrix. This matrix is used to join the nodes that belong to a certain part of the structure and make its average, so instead of having 1151 rows corresponidng to each node, we have 41 that correspond to some part of the structure.
 
 The different influence matrices can be seen in Figures \ref{fig:FCC-infmat}, \ref{fig:FHC-infmat}, \ref{fig:TCC-infmat}  and \ref{fig:THC-infmat}
 \begin{figure}[H]
@@ -296,22 +296,122 @@ The different influence matrices can be seen in Figures \ref{fig:FCC-infmat}, \r
     \caption{FLIGHT Cold case Influence matrix}
     \label{fig:FCC-infmat}
 \end{figure}
-Here in \autoref{fig:FCC-infmat}, 
+The distribution of temperature variation represented in \autoref{fig:FCC-infmat} makes perfect sense: the temperature change in most parts of the structure is close to 0, except for the area close to the battery module, where the a change in the parameter hc\_general would have a significant impact on the temperature. This is because the battery module is the only part of the structure that is dissipating power in this case. Other parts that are impacted by a change in the parameters are the radiator and its frame, which are impacted by the change in the conductance of the thermal strap, the radiator and the frame, which is normal due to the conection with the battery.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/infmatHC-F.png}
     \caption{FLIGHT Hot case Influence matrix}
     \label{fig:FHC-infmat}
 \end{figure}
+Now, in \autoref{fig:FHC-infmat}, the temperature change is more distributed, as the power is dissipated in more parts of the structure. The battery module is still a highly impacted part, although definitely not the most significant one. Here the nodes correponding to the Ebox of the UC3M, the OBC, the buterfly and the UC3M instruments would be the most impacted by a change in the parameters. Seeing it the other way round, in this case the hc\_general parameters looses part of the huge impact it had in the cold case, as the power is dissipated in more parts of the structure. Now, parameters like the conductance between different instruments  or between the tray and some of these instruments gain a lot of importanmce. This means it would be a lot easier to make measurements of these parameters in the hot case than in the cold one. However, see that the highest variation in this hot case is about 60\% the variation of the cold case, so even though in the hot case more parameters can be measured, parameters as the hc\_general will be better measured in the cold case.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatCC.png}
     \caption{TVAC Cold case Influence matrix}
     \label{fig:TCC-infmat}
 \end{figure}
+As opposed to the FLIGHT cold case, the TVAC cold case is absolutely distributed. However, taking a look at the units, its easy to see that the temperature deviation is so low that it is not worth it to measure any of these parameters, as the temperature change is really low. This charge case is not useful for the current analysis and will not be further considered.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/infmatHC.png}
     \caption{TVAC Hot case Influence matrix}
     \label{fig:THC-infmat}
 \end{figure}
+
+The influence matrices for the TVAC cases are very similar to the flight cases, as the power dissipation is the same. The only difference is that the power is dissipated in a different environment, so the nodes that are impacted by a change in the parameters are different.
+
+\subsection{Normalization of the influence matrices and normalization filter}
+In order to compare the influence matrices, they have to be normalized, which is done exposed in \autoref{ch:chapter02}. The normalized matrices can be seen in Figures \ref{fig:FCC-norm-infmat}, \ref{fig:FHC-norm-infmat}, \ref{fig:TCC-norm-infmat} and \ref{fig:THC-norm-infmat}.
+
+The result of this normalization does not really provide any new information from the one of the non-normalized matrices, as the values are the same, but this visualization helps discern which parameters have no importance, which ones are important because they have an impact on lots of parts of the structure even though they dont have a peak at one specifically (which is way more difficult to see in the non-normalized matrix) and if these last more distributed parameters are more or less important than the ones that do have a peak. By doing this, and seeing the initial resul the normalization threshold, $\varepsilon_{nf}$, has been set to 0.05.
+
+Note that in order to place sensors it will be easier if they actually have a peak, as in the node it peaks a variation of this parameter will be more noticeable. If a parameter is distributed, it will be more difficult to measure, as the variation will be more distributed, but it does not mean that parameter is less important. 
+
+The normalized matrices can be seen in Figures \ref{fig:FCC-globalinf}, \ref{fig:FHC-globalinf}, \ref{fig:TCC-globalinf} and \ref{fig:THC-globalinf} below.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/globalinfmatCC.png}
+    \caption{FLIGHT Cold case Normalized Influence matrix}
+    \label{fig:FCC-globalinf}
+\end{figure}
+As it was aforementioned, in the cold case the only parameters that have a significant impact are the ones that are connected to the battery module (hc\_general), the radiator and its frame, and the thermal strap. The rest of the matrix of influence is really close to 0. The parameters that are retained after the filter can be seen in table \autoref{tab:filteredparamsUPMSat3}. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/globalinfmatHC.png}
+    \caption{FLIGHT Hot case Normalized Influence matrix}
+    \label{fig:FHC-globalinf}   
+\end{figure}
+With the same threshold, a lot more parameters are retained in the hot case, as the power is dissipated in more parts of the structure, as it was explained in the non-normalized matrix. However see, that all the parameters that were retained in the cold case are also retained in the hot case, so we would be able to use the same sensors in this case.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/globalinfmatCC.png}
+    \caption{TVAC Cold case Normalized Influence matrix}
+    \label{fig:TCC-globalinf}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/UPMSat3/TVAC/globalinfmatHC.png}
+    \caption{TVAC Hot case Normalized Influence matrix}
+    \label{fig:THC-globalinf}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\caption{Retained parametersafter the normalization filter for each charge case.}
+\label{tab:filteredparamsUPMSat3}
+\begin{tabular}{c c c c}
+\toprule
+\multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}} & \multicolumn{1}{c}{\textbf{TVAC-Cold}} & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \ \ \midrule
+Hc_solar_cells  & Hc_solar_cells  &  &TB_RW3  \\
+Hc_general  & Hc_general  &  AB_TD  \\
+TA_UC3M2_1  & TA_UC3M2_1  &  TA_UC3M2_1  \\
+Stracker_spacer  & Stracker_spacer  &  GL_THB  \\
+GL_THB  & GL_THB  &  TC_LPY  \\
+SP_HINGE  & TB_LPY  &  Hc_solar_cells  \\
+HY_CPY_RX  & HY_CPY_RX  &  TD_LPX  \\
+    & TB_RW12  &  TB_RW12  \\
+    & TB_RW3  &  TC_OBCTTC  \\
+    & TC_OBCTTC  &  TB_LPY  \\
+    & AB_TB  &  OBCTTC_ADCS_EXP  \\
+    & TD_LPX  &  Hc_general  \\
+    & Rad_Frame_Z  &  Rad_Frame_Z  \\
+    & AB_TD &  Stracker_spacer  \\
+    & OBCTTC_ADCS_EXP  &  SP_HINGE  \\
+    & & AB_TB  \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Linear dependence filter}
+Finally, the linear dependence filter is applied to the retained parameters. the final set of parameters that are retained after this filter can be seen in \autoref{tab:finalparamsUPMSat3},
+
+
+\begin{table}[H]
+    \centering
+    \caption{Final parameters for each charge case.}
+    \label{tab:finalparamsUPMSat3}
+    \begin{tabular}{c c c c}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Flight-Cold}} & \multicolumn{1}{c}{\textbf{Flight-Hot}} & \multicolumn{1}{c}{\textbf{TVAC-Cold}} & \multicolumn{1}{c}{\textbf{TVAC-Hot}} \ \ \midrule
+    Hc_solar_cells  & Hc_solar_cells  &  & \\ 
+    Hc_general  & Hc_general  &  & \\
+    TA_UC3M2_1  & TA_UC3M2_1  &  & \\
+    Stracker_spacer  & Stracker_spacer  &  & \\
+    GL_THB  & GL_THB  &  & \\
+    SP_HINGE  & TB_LPY  &  & \\
+    HY_CPY_RX  & HY_CPY_RX  &  & \\
+        & TB_RW12  &  & \\
+        & TB_RW3  &  & \\
+        & TC_OBCTTC  &  & \\
+        & AB_TB  &  & \\
+        & TD_LPX  &  & \\
+        & Rad_Frame_Z  &  & \\
+        & AB_TD &  & \\
+        & OBCTTC_ADCS_EXP  &  & \\
+    
+        \bottomrule
+    \end{tabular}
+    \end{table}
+    
