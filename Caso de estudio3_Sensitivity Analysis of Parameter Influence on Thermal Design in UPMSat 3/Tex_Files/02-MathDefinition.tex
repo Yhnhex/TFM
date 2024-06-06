@@ -49,7 +49,7 @@ The algorithm uses the influence matrix to find which parameters have most influ
 \end{array}\right].
 \end{equation}
 
-For simpler models, such as the 4 nodes one, the Jacobian can be obtained analytically, but in general there is no analytical solution, and it must be computed numerically. Thus, the approach has been to approximate these derivatives by central finite differences\footnote{The options of forward and backward differences have also been implemented}.The central difference approximation for the partial derivative $\frac{\partial T_i}{\partial p_j}$ is given by:
+For really simple models, the Jacobian can be obtained analytically, but in general there is no analytical solution, and it must be computed numerically. Thus, the approach has been to approximate these derivatives by central finite differences\footnote{The options of forward and backward differences have also been implemented}. The central difference approximation for the partial derivative $\frac{\partial T_i}{\partial p_j}$ is given by:
 
 \begin{equation}
     \frac{\partial T_i}{\partial p_j} \approx \frac{T_i(p_j + \Delta p_j) - T_i(p_j - \Delta p_j)}{2 \Delta p_j}
@@ -94,9 +94,19 @@ where $\mathbf{M_t}$ is the jacobian or sensibility matrix defined in the previo
 
 Preliminarly,  the parameter deviation $ \delta \boldsymbol{P}$ was taken as a 10\% deviation of the parameters, as at first the real allowable deviation was not available. It is interesting to see the change in the results between both of these deviations (see Chapter 5) as it shows the importance of using the influence matrix instead of just the jacobian. Representations of influence matrices will be seen and analyzed in latter chapters, for example in \autoref{ch:03}
 
+\section{Normalization and importance filter}\label{s:infmat}
+Each influence matrix shows the effect of varying each one of the parameters in terms of temperature, giving an easy visible relation of the importance of each parameter and where it can be measured. However, in order to choose which parameters to continue with, the influence is normalized as follows:
 
- \section{Linear dependence filter}\label{s:ldfilter}
-With the influence matrix properly calculated, a second filter is applied. Within this step, the intention is to eliminate the parameters that are linearly dependent among themselves. In order to see this dependence, the Pearson correlation coefficient matrix is used. These coefficients measure the linear correlation between two variables, returning a value between -1 and +1. The closest the value of the coefficient is to +1 or -1, the more linearly dependent those values are, either directly (+1) or inversely (-1).
+
+\begin{equation}I_{X_j}=\frac{\left[\sum_{i=1}^{N_N}I_{Xij}^2\right]^{1/2}}{max_j\left(\left[\sum_{i=1}^{N_N}I_{Xij}^2\right]^{1/2}\right)},\end{equation}
+
+where $I_{Xij}$ are the values of the influence matrix $\boldsymbol{I_X}$. This way it is easier to see the impact each parameter has on the model, and then choose the most optimal ones to run the tests.
+
+With this in mind, a second filter is set so that if the normalized global influence of the parameters is below a threshold $\varepsilon_{gi}$, they are eliminated.
+This process should retain the most important parameters, eliminating first the ones that are not useful for further analysis, and now the ones we can not measure adequately, leaving now one last step to ensure that all the parameters are linearly independent.
+
+\section{Linear dependence filter}\label{s:ldfilter}
+With the influence matrix properly calculated, one last filter is applied. Within this step, the intention is to eliminate the parameters that are linearly dependent among themselves. In order to see this dependence, the Pearson correlation coefficient matrix is used. These coefficients measure the linear correlation between two variables, returning a value between -1 and +1. The closest the value of the coefficient is to +1 or -1, the more linearly dependent those values are, either directly (+1) or inversely (-1).
 
 For a dataset with \( p \) variables (in this case the parameters, disposed as columns of the influence matrix), the Pearson correlation coefficient matrix \( \mathbf{R} \) is a \( p \times p \) matrix where each element \( r_{ij} \) is the Pearson correlation coefficient between the \( i \)-th and \( j \)-th variables.
 
@@ -138,17 +148,6 @@ Taking the absolute value of this matrix $\mid \mathbf{R}\mid$, we have a diagon
 
 After that, the columns corresponding to those parameters $p_{LD}$ are eliminated from the Influence matrix, resulting in a reduced matrix $I_{Xli}$, standing for linearly independent.
 
-\section{Normalization and importance filter}\label{s:infmat}
-Each reduced influence matrix contains now linearly independent parameters and shows the effect of varying each one of the parameters in terms of temperature, giving an easy visible relation of the importance of each parameter and where it can be measured. However, in order to choose which parameters to continue with, the influence is normalized as follows:
-
-
-\begin{equation}I_{X_j}=\frac{\left[\sum_{i=1}^{N_N}I_{Xij}^2\right]^{1/2}}{max_j\left(\left[\sum_{i=1}^{N_N}I_{Xij}^2\right]^{1/2}\right)},\end{equation}
-
-where $I_{Xij}$ are the values of the influence matrix $\boldsymbol{I_X}$. This way it is easier to see the impact each parameter has on the model, and then choose the most optimal ones to run the tests.
-
-With this in mind, a third filter is set so that if the normalized global influence of the parameters is below a threshold $\varepsilon_{gi}$, they are eliminated.
-This process should retain the most important parameters, eliminating first the ones that are not useful for further analysis, then the ones that are linearly dependent and finally the ones we can not measure adequately.
-
 
 \section{FPGA model}
 
@@ -167,7 +166,7 @@ Here, in the following table, the nodes are named in order to explain and clarif
 
 \begin{table}[H]
     \centering
-    \caption{}
+    \caption{Node definition for the FPGA model.}
     \label{tab:nodesFPGA}
     \begin{tabular}{c c c}
     \toprule
@@ -189,7 +188,7 @@ Having been above-mentioned, this model was directly developed with the pycanha 
 
 \begin{table}[H]
 \centering
-\caption{}
+\caption{Parameter definition for the FPGA model.}
 \label{tab:GLsFPGA}
 
 \begin{tabular}{c c c}
@@ -224,7 +223,58 @@ The Jacobian matrix result is presented in
 \label{eq:jacobianFPGA}
 \end{equation}
 
-this matrix does not really throw us much information, but following the procedure from \autoref{s:ldfilter}, one can calculate the Pearson Correlation Coefficients Matrix, getting the following matrix:
+this matrix does not really throw us much information, but following the algorithm, the  Jacobian matrix is used to obtain the influence matrix. In this case, the deviation used to compute this matrix was taken from \cite{amd2024}, and it can be seen on \autoref{tab:deviationGLsFPGA}
+\begin{table}[H]
+    \centering
+    \caption{Parameter deviation for the FPGA parameters}
+    \label{tab:deviationGLsFPGA}
+    \begin{tabular}{c c c}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Parameter number}} & \multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Deviation}} \\ \midrule
+    1 & $GL_{12}$ & 0.05 \\
+    2 & $GL_{23}$ & 0.04 \\
+    3 & $GL_{34}$ & 0.20 \\
+    4 & $GL_{45}$ & 0.02 \\
+    5 & $GL_{56}$ & 0.01 \\
+    6 & $GL_{17}$ & 0.01 \\
+    7 & $GL_{76}$ & 0.04 \\ \bottomrule  
+    \end{tabular}
+    \end{table}
+    The resulting influence matrix is:
+    \begin{equation}
+        \resizebox{\textwidth}{!}{$\displaystyle
+        \boldsymbol{I_{X}} = \begin{bmatrix}
+            2.7249 \cdot 10^{-1} & 1.7781 \cdot 10^{-1} & 3.8147 \cdot 10^{-7} & 2.4882 \cdot 10^{-1} & 3.5786 \cdot 10^{-2} & 2.7247 \cdot 10^{-1} & 2.7247 \cdot 10^{-1} \\
+            2.0065 \cdot 10^{-1} & 3.0645 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 1.6752 \cdot 10^{-1} & 1.3073 \cdot 10^{-1} & 2.0064 \cdot 10^{-1} & 2.0064 \cdot 10^{-1} \\
+            1.8270 \cdot 10^{-1} & 2.7902 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 2.0678 \cdot 10^{-1} & 1.7235 \cdot 10^{-1} & 1.8268 \cdot 10^{-1} & 1.8268 \cdot 10^{-1} \\
+            3.1155 \cdot 10^{-3} & 4.7585 \cdot 10^{-3} & 7.6294 \cdot 10^{-7} & 3.5278 \cdot 10^{-3} & 7.2231 \cdot 10^{-3} & 3.0830 \cdot 10^{-3} & 3.0823 \cdot 10^{-3} \\
+            1.5579 \cdot 10^{-3} & 2.3796 \cdot 10^{-3} & 7.6294 \cdot 10^{-7} & 1.7647 \cdot 10^{-3} & 3.6118 \cdot 10^{-3} & 4.1271 \cdot 10^{-3} & 1.0448 \cdot 10^{-3} \\
+            3.8147 \cdot 10^{-7} & 0 \cdot 10^{0} & 3.8147 \cdot 10^{-7} & 7.6294 \cdot 10^{-7} & 3.8147 \cdot 10^{-7} & 0 \cdot 10^{0} & 3.8147 \cdot 10^{-7} \\
+            3.6228 \cdot 10^{-1} & 3.1494 \cdot 10^{-1} & 4.5207 \cdot 10^{-1} & 3.5044 \cdot 10^{-1} & 2.4393 \cdot 10^{-1} & 3.6227 \cdot 10^{-1} & 3.6227 \cdot 10^{-1}
+            \end{bmatrix},
+            $}
+        \label{eq:infmatFPGA}
+    \end{equation}
+     which is graphically presented in \autoref{fig:infmatFPGA}
+     
+     \begin{figure}[H]
+         \centering
+         \includegraphics[width=\textwidth]{Figures/FPGA/FPGA-infmat.png}
+         \caption{Influence matrix of the FPGA}
+         \label{fig:infmatFPGA}
+     \end{figure}
+
+In \autoref{fig:infmatFPGA} it can be seen that the columns corresponding to parameters $GL\_12$, $GL\_56$ and 76 look quite similar, due to the fact that nodes 5 and 7 are unnecessary, as they are not dissipating any heat, nor radiatively nor conductively. 
+
+The next step is to see the normalized influence of the parameters, which can be seen in \autoref{fig:globalinfFPGA}. Setting the influence threshold on $\varepsilon_I = 0.1$, in this case all the parameters are way aboveit, possibly due to the fact that being such a simple model it is difficult for any parameter to not be representative.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/FPGA/FPGA-infglobal.png}
+    \caption{Normalized global influence of the parameters of the FPGA}
+    \label{fig:globalinfFPGA}
+\end{figure}
+    
+Finally, following the procedure from \autoref{s:ldfilter}, one can calculate the Pearson Correlation Coefficients Matrix, getting the following matrix:
 
 \begin{equation}
 \resizebox{\textwidth}{!}{$\displaystyle
@@ -239,80 +289,10 @@ this matrix does not really throw us much information, but following the procedu
   \end{bmatrix},
   $}
 \end{equation}
-where the values of $r_{57}$, $r_{12}$ and $r_{75}$ are above the $\varepsilon_{LD}$, thus making these parameters linearly dependent. We have chosen to retain only $GL_{12}$, due to the importance of that parameter.
+where it can be appreciated that the values of $r_{57}$, $r_{12}$ and $r_{75}$ are above the $\varepsilon_{LD}$, thus making these parameters linearly dependent. We have chosen to retain only $GL_{12}$, due to the physical importance of that parameter.
 
-With the lineally dependent parameters chosen, the new reduced Jacobian is expressed as,
-\begin{equation}
-    \resizebox{\textwidth}{!}{$\displaystyle
-    \boldsymbol{J_{LI}} = \begin{bmatrix}
-      7.63 \cdot 10^{-6} & -2.37 \cdot 10^{0} & -1.36 \cdot 10^{0} & -1.18 \cdot 10^{0} & -8.39 \cdot 10^{-4} & -3.24 \cdot 10^{-4} \\
-      0.00 \cdot 10^{0} & 2.64 \cdot 10^{0} & -1.00 \cdot 10^{0} & -1.66 \cdot 10^{0} & -1.22 \cdot 10^{-3} & -4.67 \cdot 10^{-4} \\
-      0.00 \cdot 10^{0} & 2.41 \cdot 10^{0} & -9.13 \cdot 10^{-1} & 1.20 \cdot 10^{0} & -1.30 \cdot 10^{-3} & -4.96 \cdot 10^{-4} \\
-      0.00 \cdot 10^{0} & 4.11 \cdot 10^{-2} & -1.56 \cdot 10^{-2} & 2.06 \cdot 10^{-2} & -2.16 \cdot 10^{-3} & -8.30 \cdot 10^{-4} \\
-      7.63 \cdot 10^{-6} & 2.05 \cdot 10^{-2} & -7.79 \cdot 10^{-3} & 1.03 \cdot 10^{-2} & 1.71 \cdot 10^{-1} & -6.51 \cdot 10^{-2} \\
-      7.63 \cdot 10^{-6} & 9.54 \cdot 10^{-6} & 3.81 \cdot 10^{-6} & 5.72 \cdot 10^{-5} & 2.54 \cdot 10^{-5} & 0.00 \cdot 10^{0}
-    \end{bmatrix},
-    $}
-    \label{eq:jacobianredFPGA}
-    \end{equation}
-    
-    
-Following the algorithm, the reduced Jacobian matrix is used to obtain the influence matrix. In this case, the deviation used to compute this matrix was taken from \cite{amd2024}, and it can be seen on \autoref{tab:deviationGLsFPGA}
 
-\begin{table}[H]
-\centering
-\caption{Parameter deviation for the FPGA parameters}
-\label{tab:deviationGLsFPGA}
-
-\begin{tabular}{c c c}
-\toprule
-\multicolumn{1}{c}{\textbf{Parameter number}} & \multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Deviation}} \\ \midrule
-1 & $GL_{12}$ & 0.05 \\
-2 & $GL_{23}$ & 0.04 \\
-3 & $GL_{34}$ & 0.20 \\
-4 & $GL_{45}$ & 0.02 \\
-5 & $GL_{56}$ & 0.01 \\
-6 & $GL_{17}$ & 0.01 \\
-7 & $GL_{76}$ & 0.04 \\\\ \bottomrule  
-\end{tabular}
-\end{table}
-
-The resulting influence matrix is:
-\begin{equation}
-    \resizebox{\textwidth}{!}{$\displaystyle
-    \boldsymbol{I_{red}} = \begin{bmatrix}
-        2.7249 \cdot 10^{-1} & 1.7781 \cdot 10^{-1} & 3.8147 \cdot 10^{-7} & 2.4882 \cdot 10^{-1} & 2.7247 \cdot 10^{-1} \\
-        2.0065 \cdot 10^{-1} & 3.0645 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 1.6752 \cdot 10^{-1} & 2.0064 \cdot 10^{-1} \\
-        1.8269 \cdot 10^{-1} & 2.7902 \cdot 10^{-1} & 7.6294 \cdot 10^{-7} & 2.0678 \cdot 10^{-1} & 1.8268 \cdot 10^{-1} \\
-        3.1155 \cdot 10^{-3} & 4.7585 \cdot 10^{-3} & 7.6294 \cdot 10^{-7} & 3.5278 \cdot 10^{-3} & 3.0830 \cdot 10^{-3} \\
-        1.5579 \cdot 10^{-3} & 2.3796 \cdot 10^{-3} & 7.6294 \cdot 10^{-7} & 1.7647 \cdot 10^{-3} & 4.1271 \cdot 10^{-3} \\
-        3.8147 \cdot 10^{-7} & 0.0000 \cdot 10^{0} & 3.8147 \cdot 10^{-7} & 3.8147 \cdot 10^{-7} & 0.0000 \cdot 10^{0} \\
-        3.6228 \cdot 10^{-1} & 3.1494 \cdot 10^{-1} & 4.5207 \cdot 10^{-1} & 3.5044 \cdot 10^{-1} & 3.6227 \cdot 10^{-1} 
-      \end{bmatrix},
-        $}
-    \label{eq:infmatFPGA}
-\end{equation}
- which is graphically presented in \autoref{fig:infmatFPGA}
- 
- \begin{figure}[H]
-     \centering
-     \includegraphics[width=\textwidth]{Figures/FPGA/FPGA-redinfmat.png}
-     \caption{Influence matrix of the FPGA}
-     \label{fig:infmatFPGA}
- \end{figure}
-
- In \autoref{fig:infmatFPGA} it can be seen that the most important parameters are GL\_ and GL\_, and the points where they reach its maximum are nodes PATATIN and PATATON. However, in order to consider the influence of the parameters among all the nodes of the model, they are normalized. The result of this normalization can be seen in \autoref{fig:globalinfFPGA}
-
- \begin{figure}[H]
-     \centering
-     \includegraphics[width=\textwidth]{Figures/FPGA/FPGA-redinfglobal.png}
-     \caption{Normalized global influence of the parameters of the FPGA}
-     \label{fig:globalinfFPGA}
- \end{figure}
-
- Setting the influence threshold on $\varepsilon_I = 0.1$, no parameter can be eliminated. 
-
- Finally, the parameters that are chosen to study the FPGA model are:
+ Thus, the parameters that are chosen to study the FPGA model are:
  \begin{table}[H]
     \centering
     \caption{Final Parameters chosen for the FPGA model}
