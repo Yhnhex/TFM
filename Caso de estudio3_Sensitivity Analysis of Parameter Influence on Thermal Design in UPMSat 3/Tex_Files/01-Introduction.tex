@@ -3,18 +3,16 @@ In the context of thermal testing, the effectiveness of sensor placement plays a
 
 Traditional approaches to sensor positioning often fall short in defining thermal experiments due to the complexity of representing the physical processes and properties in a thermal mathematical model. Thus, an adequate parameter selection is key when trying to reduce a thermal mathematical model. This might seem obvious at first sight, but  complex thermal mathematical models can have up to thousands of parameters and surpass the million of nodes, so the job of selecting the parameters that capture the physics of the problem for every charge case must not be underestimated.
 
-Throughout this study case we have developed an efficient tool to identify the input parameters that have a significant influence on any of the possible outcomes. This tool has been used on 3 different thermal models in order to get a proper validation:
+Throughout this study case we have developed an efficient tool to identify the input parameters that have a significant influence on any of the possible outcomes. This tool has been used on 2 different thermal models in order to get a proper validation:
 
 \begin{itemize}
-	\item A 4 nodes model, which is a simple model where  that allows to test the method in a controlled environment.
+	
 	\item A real FPGA model with 8 nodes that is used to test the method in a real, yet simple scenario.
 	\item The UPMSat-3, a real satellite that is currently being developed by the Universidad Politécnica de Madrid. This model is used to test the method in a real scenario.
 
 \end{itemize}
 
-The results of this work can be applied, in general, to many fields, however the work has been focused on spacecraft and space instruments thermal modeling and testing, in the context of
-the Space sector. The examples used along the document are centered on space hardware and for that reason, in the next section, the spacecraft thermal control topic is introduced
-with a brief summary of the particularities of the space environment
+The results of this work can be applied, in general, to many fields, however the work has been focused on spacecraft and space instruments thermal modeling and testing, in the context of the Space sector. The examples used along the document are centered on space hardware and for that reason, in the next section, the spacecraft thermal control topic is introduced with a brief summary of the particularities of the space environment
 
 \section{Spacecraft Thermal Control}
 
@@ -24,7 +22,7 @@ The main driver of a spacecraft thermal design is the in-flight environment wher
 emission of the planet. Because a spacecraft operates in a vacuum, the only possible thermal interaction between the spacecraft and its environment its through radiation. On an Earth orbit, solar irradiance is the main heat load, with a mean value of 1366 W/m2 and a seasonal variation of ±1.7\% due to the eccentricity of the orbit of the Earth around the Sun. The solar irradiance value scales with the square of the distance to the Sun, and its spectrum can be modeled, from a thermal point of view, as a black body at some 5762 K, where 99 \% of the spectral emissive power of the Sun lies in the range 0.15 to 10 µm wavelength.
 
 \subsection{Thermal mathematical modelling}
-When creating a thermal model for an analysis of something space-related, the most common method is the lumped parameters [INSERTAR REFERENCIA], which consist of discretizing the physical system to a finite set of nodes, each of those representing an isotherm tiny volume with some properties associated to itself (with the thermal capacity of the material being among them). 
+When creating a thermal model for an analysis of something space-related, the most common method is the lumped parameters \cite{gilmore2002}, \cite{meseguer2012}, \cite{karam2012},  which consist of discretizing the physical system to a finite set of nodes, each of those representing an isotherm tiny volume with some properties associated to itself (with the thermal capacity of the material being among them). 
 
 The nodes are interconnected between themselves by the lineal (conductive and convective -if possible-) $G_{L_{ij}}$ and radiative $G_{R_{ij}}$ thermal conductances. The thermal charges are summed up in $Q_i$ (with $i$ being the number of the node); within this term, the solar charge, the planetary albedo, the electrical dissipation of the payloads or the infrared earth emission are represented among others. Now, using the equation of energy balance,
 \begin{equation}C_i\frac{dT_i}{dt}=Q_i+\sum_{j=1}^nG_{Lij}\left(T_j-T_i\right)+\sum_{j=1}^nG_{Rij}\sigma\left(T_j^4-T_i^4\right)
@@ -32,7 +30,7 @@ The nodes are interconnected between themselves by the lineal (conductive and co
 \end{equation}
 we get a system of ordinary differential equations that can be solved through numerical methods.
 
-The values of the thermal conductances and capacitances are not always known, as they are usually a function of physical parameters such as geometry, pressure, torque, or surface finishing. There are several ways of calculating the lineal conductances [REFERENCIA], but when using reduced thermal models (where the geometry has been really simplified) it is usually better to take these $G_L$ as parameters. As for the radiative conductances, $G_R$, they come from the Geometrical Mathematical Model, the GMM, that is, when defining the geometry of the thermal model, the geometry is also detailed in order to get the external thermal charges and the view factors, which, with the different surface coatings give the corresponding $G_R$. While the calculation -or at least the estimation- of the $G_L$ can be done analytically and/or experimentally, the $G_R$ are usually obtained numerically through a Monte Carlo analysis [REFERENCIA], as it is quite complex even for relatively simple geometries.  Most of the $G_L$ and $G_R$ are calculated through software, however, they usually come from parameters that have been approximated, which is why, in simple models these conductances are often taken as parameters.
+The values of the thermal conductances and capacitances are not always known, as they are usually a function of physical parameters such as geometry, pressure, torque, or surface finishing. There are several ways of calculating the lineal conductances \cite{garmendia2016}, \cite{appel2004}, but when using reduced thermal models (where the geometry has been really simplified) it is usually better to take these $G_L$ as parameters. As for the radiative conductances, $G_R$, they come from the Geometrical Mathematical Model, the GMM, that is, when defining the geometry of the thermal model, the geometry is also detailed in order to get the external thermal charges and the view factors, which, with the different surface coatings give the corresponding $G_R$. While the calculation -or at least the estimation- of the $G_L$ can be done analytically and/or experimentally, the $G_R$ are usually obtained numerically through a Monte Carlo analysis \cite{planasalmazan1997}, as it is quite complex even for relatively simple geometries.  Most of the $G_L$ and $G_R$ are calculated through software, however, they usually come from parameters that have been approximated, which is why, in simple models these conductances are often taken as parameters.
 
 \subsection{Analaysis cases}
 According to the ECSS, when analyzing the thermal requirements of a space mission, one must evaluate the stationary cold and hot cases first, as they are the most extreme cases, and, if those are properly defined, the temperatures the system might reach will be enveloped by them. This makes the information of these cases really useful.
