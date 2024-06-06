@@ -48,17 +48,17 @@
 % Figuras    
 \addcontentsline{toc}{section}{\listfigurename}
 \listoffigures
-\cleardoublepage
+\newpage
 
 % Tablas
 \addcontentsline{toc}{section}{\listtablename}
 \listoftables
-\cleardoublepage
+\newpage
 
 % Acronyms  
 \addcontentsline{toc}{section}{\acronymname}
 \printglossary[type=\acronymtype]   % \printglossary[type=\acronymtype,style=long]
-\cleardoublepage
+\newpage
 
 % Numeracion en arabico
 \setcounter{page}{0}
@@ -82,23 +82,23 @@
 \addcontentsline{toc}{section}{Referencias}
 \bibliographystyle{elsarticle-num}
 \bibliography{references}
-\cleardoublepage
+
 
 
 
 %   ---   ANEXOS   ---   %
 
-\appendix
-\renewcommand{\appendixname}{Anexos}
-\addcontentsline{toc}{section}{\appendixname}
-\clearpage % or \cleardoublepage
-\appendixpage
-\addappheadtotoc
-\renewcommand{\appendixname}{Anexo}
+% \appendix
+% \renewcommand{\appendixname}{Anexos}
+% \addcontentsline{toc}{section}{\appendixname}
+% \clearpage % or \cleardoublepage
+% \appendixpage
+% \addappheadtotoc
+% \renewcommand{\appendixname}{Anexo}
 
 
-\input{./Tex_Files/A_01.tex}
-\cleardoublepage
+% \input{./Tex_Files/A_01.tex}
+% \cleardoublepage
 
 
 

@@ -15,13 +15,13 @@ The thermal design of the UPMSat3 has also been developed in the IDR/UPM and a t
 The thermal model is composed of 3 trays, each one with different instruments and payloads.  The GMM is shown in Figure \ref{fig:UPMSat3-GMM} while the interior of the model can be seen in  Figure \ref{fig:UPMSat3-Str-Inst-PL}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{Figures/UPMSat3/3DandESATAN-TNSmodel.png}
+    \includegraphics[width = 0.9\textwidth]{Figures/UPMSat3/3DandESATAN-TNSmodel.png}
     \caption{3D and ESATAN-TMS models.}
     \label{fig:UPMSat3-GMM}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{Figures/UPMSat3/str-inst-PL ESATANmodels.png}
+    \includegraphics[width = 0.9\textwidth]{Figures/UPMSat3/str-inst-PL ESATANmodels.png}
     \caption{Structure, instruments and payloads.}
     \label{fig:UPMSat3-Str-Inst-PL}
 \end{figure}
@@ -49,7 +49,7 @@ With respect to the mission and environment the satellite will suffer, the UPMSa
     \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{Figures/UPMSat3/orbit.jpg}
+    \includegraphics[width = 0.8\textwidth]{Figures/UPMSat3/orbit.jpg}
     \caption{Orbit representation of the UPMSat-3}
     \label{fig:orbit}
 \end{figure}
@@ -247,6 +247,17 @@ Once the parameters have been read, the thermal conductivites, the densities and
         17 & Hc\_solar\_cells & 1000.0 \\
         18 & Node\_to\_instrument & 2.0 \\
         19 & OBCTTC\_ADCS\_EXP & 0.114 \\  
+        20 & Rad\_Frame\_Y & 0.00259 \\
+        21 & Rad\_Frame\_Z & 0.00336 \\
+        22 & SP\_HINGE & 0.3 \\
+        23 & Stracker\_spacer & 0.01 \\
+        24 & TAD\_CS & 0.032831 \\
+        25 & TA\_LPXY & 0.11564 \\
+        26 & TA\_UC3M2\_1 & 0.013025 \\
+        27 & TA\_UC3M2\_2 & 0.021 \\
+        28 & TB\_ADCS & 0.885 \\
+        39 & TB\_LPX & 0.0996 \\
+        30 & TB\_LPY & 0.108 \\
         \bottomrule
         \end{tabular}
     \end{table}
@@ -260,17 +271,6 @@ Once the parameters have been read, the thermal conductivites, the densities and
         \hline
         Number & Parameter & Value \\
         \hline
-    20 & Rad\_Frame\_Y & 0.00259 \\
-    21 & Rad\_Frame\_Z & 0.00336 \\
-    22 & SP\_HINGE & 0.3 \\
-    23 & Stracker\_spacer & 0.01 \\
-    24 & TAD\_CS & 0.032831 \\
-    25 & TA\_LPXY & 0.11564 \\
-    26 & TA\_UC3M2\_1 & 0.013025 \\
-    27 & TA\_UC3M2\_2 & 0.021 \\
-    28 & TB\_ADCS & 0.885 \\
-    39 & TB\_LPX & 0.0996 \\
-    30 & TB\_LPY & 0.108 \\
     31 & TB\_RW12 & 0.0362655 \\
     32 & TB\_RW3 & 0.0989393 \\
     33 & TC\_LPX & 0.0996 \\
@@ -329,7 +329,7 @@ The result of this normalization does not really provide any new information fro
 
 Note that in order to place sensors it will be easier if they actually have a peak, as in the node it peaks a variation of this parameter will be more noticeable. If a parameter is distributed, it will be more difficult to measure, as the variation will be more distributed, but it does not mean that parameter is less important. 
 
-The normalized matrices can be seen in Figures \ref{fig:FCC-globalinf}, \ref{fig:FHC-globalinf}, \ref{fig:TCC-globalinf} and \ref{fig:THC-globalinf} below.
+The normalized matrices can be seen in Figures \ref{fig:FCC-globalinf}, \ref{fig:FHC-globalinf} and \ref{fig:THC-globalinf} below.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \linewidth]{Figures/UPMSat3/Flight/Nuevas/globalinfCC.png}
@@ -415,7 +415,7 @@ Finally, an SVD decomposition has been done over the initial set of parameters a
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \linewidth]{Figures/UPMSat3/Eigenvalues.png}
+    \includegraphics[width = \linewidth]{Figures/Eigenvalues.png}
     \caption{Comparison of eigenvalues TVAC hot case reduced an original matrices}
-    \label{fig:TCC-infmat}
+    \label{fig:SVD}
 \end{figure}
